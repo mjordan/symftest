@@ -22,10 +22,6 @@
 namespace LOM\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use LOM\UserBundle\Entity\User;
-use LOM\UserBundle\Form\Type\RegistrationType;
-use LOM\UserBundle\Form\Model\Registration;
 
 class AdminController extends Controller {
 
@@ -33,37 +29,6 @@ class AdminController extends Controller {
         return $this->render(
                         "LOMUserBundle:Admin:index.html.twig", array('users' => $this->getDoctrine()->getRepository('LOMUserBundle:User')->findAll())
         );
-    }
-
-    public function registerAction(Request $request) {
-        $user = new User();
-        $form = $this->createFormBuilder($user, array('action' => $this->generateUrl('user_register')))
-                ->add('username', 'text')
-                        ->add('password', 'repeated', array(
-                            'first_name' => 'password',
-                            'second_name' => 'confirm',
-                            'type' => 'password'))
-                ->add('Register', 'submit')
-                ->getForm();
-
-        if ($request->getMethod() === 'POST') {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $factory = $this->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($user);
-                $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
-                $user->setPassword($password);
-                $user->save($this);
-                return $this->redirect($this->generateUrl('user_registered'));
-            }
-        }
-
-        return $this->render('LOMUserBundle:Admin:register.html.twig', array('form' => $form->createView())
-        );
-    }
-
-    public function userRegisteredAction() {
-        return $this->render('LOMUserBundle:Admin:user_registered.html.twig');
     }
 
 }

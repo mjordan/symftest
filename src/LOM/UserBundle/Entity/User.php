@@ -79,6 +79,10 @@ class User implements UserInterface, \Serializable, EquatableInterface {
         $this->roles = new ArrayCollection();
     }
 
+    public function __toString() {
+        return $this->username;
+    }
+
     public function eraseCredentials() {
 
     }
@@ -180,4 +184,27 @@ class User implements UserInterface, \Serializable, EquatableInterface {
         return $user !== null && $user->id === $this->id;
     }
 
+
+    /**
+     * Add roles
+     *
+     * @param \LOM\UserBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\LOM\UserBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \LOM\UserBundle\Entity\Role $roles
+     */
+    public function removeRole(\LOM\UserBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
 }

@@ -52,6 +52,12 @@ class Role implements RoleInterface {
      */
     private $users;
 
+    /**
+     * @ORM\Column(name="desc", type="string", length=255)
+     * @return type
+     */
+    private $desc;
+
     public function getRole() {
         return $this->role;
     }
@@ -62,6 +68,10 @@ class Role implements RoleInterface {
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 
     /**
@@ -141,5 +151,28 @@ class Role implements RoleInterface {
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Set desc
+     *
+     * @param string $desc
+     * @return Role
+     */
+    public function setDesc($desc)
+    {
+        $this->desc = $desc;
+
+        return $this;
+    }
+
+    /**
+     * Get desc
+     *
+     * @return string 
+     */
+    public function getDesc()
+    {
+        return $this->desc;
     }
 }

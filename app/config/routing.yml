@@ -1,6 +1,6 @@
 lom_user:
     resource: "@LOMUserBundle/Resources/config/routing.yml"
-    prefix:   /user
+    prefix:   /
 
 login:
     path: /login
