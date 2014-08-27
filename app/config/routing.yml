@@ -1,0 +1,13 @@
+lom_user:
+    resource: "@LOMUserBundle/Resources/config/routing.yml"
+    prefix:   /user
+
+login:
+    path: /login
+    defaults: { _controller: LOMUserBundle:Security:login }
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout

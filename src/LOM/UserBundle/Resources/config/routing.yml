@@ -1,0 +1,31 @@
+index:
+    pattern:    /
+    defaults: { _controller: LOMUserBundle:Default:index }
+
+login:
+    pattern:    /login
+    defaults:   { _controller: LOMUserBundle:Security:login}
+
+login_check:
+    pattern:    /login_check
+
+admin:
+    pattern: /admin
+    defaults: { _controller: LOMUserBundle:Admin:index }
+
+role:
+    pattern: /admin/roles
+    defaults: { _controller: LOMUserBundle:Admin:roles }
+
+role_edit:
+    pattern: /admin/role/{id}
+    defaults: { _controller: LOMUserBundle:Admin:roleEdit }
+
+
+user_register:
+    path: /admin/register
+    defaults: { _controller: LOMUserBundle:Admin:register }
+
+user_registered:
+    path: /admin/registered
+    defaults: { _controller: LOMUserBundle:Admin:userRegistered }

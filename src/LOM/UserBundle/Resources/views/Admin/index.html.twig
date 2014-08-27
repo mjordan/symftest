@@ -1,0 +1,14 @@
+<p>Hello {{ app.user.username }}.</p>
+
+<p><a href="admin/register">add a user</a></p>
+
+<ul>
+    {% for user in users %}
+    <li>{{ user.username }}</li>
+    <ul>
+    {% for role in user.getRoles %}
+        <li>{{ role.name }}</li>
+    {% endfor %}
+    </ul>
+    {% endfor %}
+</ul>
