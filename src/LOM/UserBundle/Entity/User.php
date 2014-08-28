@@ -65,6 +65,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
 
     /**
      * @ORM\MAnyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinTable(name="user_role")
      */
     private $roles;
 

@@ -22,11 +22,13 @@ The string doesn't match the expected date/time format. The string to parse was:
 namespace LOM\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="lom_roles")
  * @ORM\Entity()
+ * @UniqueEntity(fields="role", message="Roles must be unique.")
  */
 class Role implements RoleInterface {
 
@@ -54,7 +56,6 @@ class Role implements RoleInterface {
 
     /**
      * @ORM\Column(name="desc", type="string", length=255)
-     * @return type
      */
     private $desc;
 
