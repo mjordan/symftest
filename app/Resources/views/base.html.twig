@@ -7,6 +7,18 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        <header>
+            <nav>
+                <ul>
+                {% if app.user and is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('admin_user') }}">Users</a></li>
+                    <li><a href="{{ path('admin_role') }}">Roles</a></li>
+                    <li><a href="{{ path('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ path('login') }}">Login</a></li>
+                {% endif %}
+                </ul>
+        </header>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

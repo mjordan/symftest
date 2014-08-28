@@ -1,14 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
 <p>Hello {{ app.user.username }}</p>
 
 <ul>
     {% for role in app.user.getRoles %}
-    <li> {{ role.name }} - {{ role.role }} </li>
+    <li>{{ role.role }} </li>
     {% endfor %}
 </ul>
 
-<ul>
-    <li>ROLE_FOO: {% if is_granted('ROLE_FOO') %} yes {% endif %}</li>
-    <li>role_foob: {% if is_granted('role_foob') %} yes {% endif %}</li>
-    <li>ROLE_NM: {% if is_granted('ROLE_NM') %} yes {% endif %}</li>
-    <li>role_rl: {% if is_granted('role_rl') %} yes {% endif %}</li>
-</ul>
+{% endblock %}

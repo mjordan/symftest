@@ -13,11 +13,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends EntityRepository {
 
+//    from
+//	lom_users inner join user_role
+//		on lom_users.id = user_id
+//	inner join lom_roles
+//		on role_id = lom_roles.id;
     public function loadUserByUsername($username) {
-        $q = $this->createQueryBuilder('u')
-                ->setParameter('username', $username)
-                ->leftJoin('u.roles', 'r')
+        $q = $this->createQueryBuilder('u, r')
                 ->where('u.username = :username')
+                ->leftJoin('u.roles', 'r')
+                ->setParameter('username', $username)
                 ->getQuery();
         $user = null;
         try {

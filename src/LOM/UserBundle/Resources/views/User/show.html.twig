@@ -24,7 +24,19 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
+    <ul>
+        {% for role in entity.getRoles %}
+        <li>{{ role.role }}</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for role in roles %}
+        <li>{{ role.role }} - {% if is_granted(role.role) %}YES{% else %}NO{% endif %}</li>
+        {% endfor %}
+    </ul>
+
+    <ul class="record_actions">
     <li>
         <a href="{{ path('admin_user') }}">
             Back to the list

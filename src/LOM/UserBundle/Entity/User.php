@@ -64,8 +64,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     private $isActive;
 
     /**
-     * @ORM\MAnyToMany(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinTable(name="user_role")
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      */
     private $roles;
 
@@ -184,7 +183,6 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     public function isEqualTo(UserInterface $user) {
         return $user !== null && $user->id === $this->id;
     }
-
 
     /**
      * Add roles

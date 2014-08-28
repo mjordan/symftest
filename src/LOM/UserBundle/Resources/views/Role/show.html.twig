@@ -18,11 +18,17 @@
                 <td>{{ entity.role }}</td>
             </tr>
             <tr>
-                <th>Desc</th>
-                <td>{{ entity.desc }}</td>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
             </tr>
         </tbody>
     </table>
+
+    <ul>
+        {% for user in entity.getUsers %}
+        <li>{{ user.username }}
+        {% endfor %}
+    </ul>
 
         <ul class="record_actions">
     <li>

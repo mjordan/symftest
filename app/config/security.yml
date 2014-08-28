@@ -4,15 +4,13 @@ security:
             algorithm: bcrypt
             cost: 12
 
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+#    role_hierarchy:
+#        ROLE_ADMIN:       ROLE_USER
+#        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
         main:
-            entity:
-                class: LOMUserBundle:User
-                property: username
+            entity: { class: LOMUserBundle:User }
 
     firewalls:
         dev:

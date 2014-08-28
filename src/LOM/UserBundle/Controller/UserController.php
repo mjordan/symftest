@@ -99,10 +99,13 @@ class UserController extends Controller {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $roles = $em->getRepository('LOMUserBundle:Role')->findAll();
+
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('LOMUserBundle:User:show.html.twig', array(
                     'entity' => $entity,
+                    'roles' => $roles,
                     'delete_form' => $deleteForm->createView(),
         ));
     }
