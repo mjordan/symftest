@@ -26,6 +26,10 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class DefaultController extends Controller {
 
+    /**
+     * Show networks, user info, status of deposits?
+     * @return type
+     */
     public function indexAction() {
         return $this->render("LOMUserBundle:Default:index.html.twig");
     }
