@@ -68,6 +68,26 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      */
     private $roles;
 
+    /**
+     * @ORM\Column(name="fullname", type="string", length=128)
+     */
+    private $fullname;
+
+    /**
+     * @ORM\Column(name="institution", type="string", length=128)
+     */
+    private $institution;
+
+    /**
+     * @ORM\Column(name="reset_expires", type="datetime", nullable=true)
+     */
+    private $reset_expires;
+
+    /**
+     * @ORM\Column(name="reset_code", type="string", length=64)
+     */
+    private $reset_code;
+
     public function save($obj) {
         $em = $obj->getDoctrine()->getEntityManager();
         $em->persist($this);
@@ -77,6 +97,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     public function __construct() {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
+        $this->reset_expires = null;
     }
 
     public function __toString() {
@@ -205,5 +226,97 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     public function removeRole(\LOM\UserBundle\Entity\Role $roles)
     {
         $this->roles->removeElement($roles);
+    }
+
+    /**
+     * Set fullname
+     *
+     * @param string $fullname
+     * @return User
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string 
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * Set institution
+     *
+     * @param string $institution
+     * @return User
+     */
+    public function setInstitution($institution)
+    {
+        $this->institution = $institution;
+
+        return $this;
+    }
+
+    /**
+     * Get institution
+     *
+     * @return string 
+     */
+    public function getInstitution()
+    {
+        return $this->institution;
+    }
+
+    /**
+     * Set reset_expires
+     *
+     * @param \DateTime $resetExpires
+     * @return User
+     */
+    public function setResetExpires($resetExpires)
+    {
+        $this->reset_expires = $resetExpires;
+
+        return $this;
+    }
+
+    /**
+     * Get reset_expires
+     *
+     * @return \DateTime 
+     */
+    public function getResetExpires()
+    {
+        return $this->reset_expires;
+    }
+
+    /**
+     * Set reset_code
+     *
+     * @param string $resetCode
+     * @return User
+     */
+    public function setResetCode($resetCode)
+    {
+        $this->reset_code = $resetCode;
+
+        return $this;
+    }
+
+    /**
+     * Get reset_code
+     *
+     * @return string 
+     */
+    public function getResetCode()
+    {
+        return $this->reset_code;
     }
 }

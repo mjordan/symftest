@@ -28,3 +28,12 @@ admin_user_delete:
     path:     /{id}/delete
     defaults: { _controller: "LOMUserBundle:User:delete" }
     requirements: { _method: post|delete }
+
+admin_user_password:
+    path:   /{id}/password
+    defaults: {_controller: "LOMUserBundle:User:password" }
+
+admin_user_password_update:
+    path:     /{id}/password_update
+    defaults: {_controller: "LOMUserBundle:User:updatePassword" }
+    requirements: { _method: post|put }

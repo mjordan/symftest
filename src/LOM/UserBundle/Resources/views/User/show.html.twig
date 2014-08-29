@@ -21,22 +21,26 @@
                 <th>Isactive</th>
                 <td>{{ entity.isActive }}</td>
             </tr>
+            <tr>
+                <th>Fullname</th>
+                <td>{{ entity.fullname }}</td>
+            </tr>
+            <tr>
+                <th>Institution</th>
+                <td>{{ entity.institution }}</td>
+            </tr>
+            <tr>
+                <th>Reset_expires</th>
+                <td>{{ entity.resetexpires|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Reset_code</th>
+                <td>{{ entity.resetcode }}</td>
+            </tr>
         </tbody>
     </table>
 
-    <ul>
-        {% for role in entity.getRoles %}
-        <li>{{ role.role }}</li>
-        {% endfor %}
-    </ul>
-
-    <ul>
-        {% for role in roles %}
-        <li>{{ role.role }} - {% if is_granted(role.role) %}YES{% else %}NO{% endif %}</li>
-        {% endfor %}
-    </ul>
-
-    <ul class="record_actions">
+        <ul class="record_actions">
     <li>
         <a href="{{ path('admin_user') }}">
             Back to the list
@@ -45,6 +49,11 @@
     <li>
         <a href="{{ path('admin_user_edit', { 'id': entity.id }) }}">
             Edit
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_user_password', { 'id': entity.id }) }}">
+            Change password
         </a>
     </li>
     <li>{{ form(delete_form) }}</li>

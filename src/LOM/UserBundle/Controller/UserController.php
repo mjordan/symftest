@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use LOM\UserBundle\Entity\User;
 use LOM\UserBundle\Form\UserType;
+use LOM\UserBundle\Form\Model\AdminChangePassword;
+use LOM\UserBundle\Form\AdminChangePasswordType;
 
 /**
  * User controller.
@@ -99,13 +101,10 @@ class UserController extends Controller {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $roles = $em->getRepository('LOMUserBundle:Role')->findAll();
-
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('LOMUserBundle:User:show.html.twig', array(
                     'entity' => $entity,
-                    'roles' => $roles,
                     'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -169,16 +168,7 @@ class UserController extends Controller {
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($entity);
-            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
-            $entity->setPassword($password);
             $em->flush();
-
-            // Force refresh of user roles
-            $token = $this->get('security.context')->getToken()->setAuthenticated(false);
-
             return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
         }
 
@@ -186,6 +176,62 @@ class UserController extends Controller {
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    public function passwordAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('LOMUserBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $passwordForm = $this->createPasswordForm($entity);
+
+        return $this->render('LOMUserBundle:User:password.html.twig', array(
+                    'entity' => $entity,
+                    'password_form' => $passwordForm->createView(),
+        ));
+    }
+
+    private function createPasswordForm(User $entity) {
+        $form = $this->createForm(new AdminChangePasswordType, $entity, array(
+            'action' => $this->generateUrl('admin_user_password_update', array(
+                'id' => $entity->getId()
+            )),
+            'method' => 'PUT',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Update password'));
+        return $form;
+    }
+
+    public function updatePasswordAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('LOMUserBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $passwordForm = $this->createPasswordForm($entity);
+        $passwordForm->handleRequest($request);
+
+        if ($passwordForm->isValid()) {
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($password);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('admin_user_show', array('id' => $id)));
+        }
+
+        return $this->render('LOMUserBundle:User:password.html.twig', array(
+                    'entity' => $entity,
+                    'password_form' => $passwordForm->createView(),
         ));
     }
 
