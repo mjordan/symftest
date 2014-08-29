@@ -40,9 +40,7 @@ class UserController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($entity);
-            $password = md5(time() . "LOM User Bundle");
+            $password = md5(time() . rand() . "not a valid password.");
             $entity->setPassword($password);
             $em->persist($entity);
             $em->flush();
