@@ -5,7 +5,10 @@
 
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
+    <p>Note: if you change a user's roles, the user may need to logout
+        and login to refresh them.</p>
+
+    <ul class="record_actions">
     <li>
         <a href="{{ path('admin_user') }}">
             Back to the list

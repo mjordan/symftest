@@ -176,6 +176,9 @@ class UserController extends Controller {
             $entity->setPassword($password);
             $em->flush();
 
+            // Force refresh of user roles
+            $token = $this->get('security.context')->getToken()->setAuthenticated(false);
+
             return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
         }
 
