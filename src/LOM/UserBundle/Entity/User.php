@@ -84,7 +84,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     private $reset_expires;
 
     /**
-     * @ORM\Column(name="reset_code", type="string", length=64)
+     * @ORM\Column(name="reset_code", type="string", length=64, nullable=true)
      */
     private $reset_code;
 

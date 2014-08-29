@@ -42,7 +42,7 @@ class UserController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
-            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $password = md5(time() . "LOM User Bundle");
             $entity->setPassword($password);
             $em->persist($entity);
             $em->flush();
