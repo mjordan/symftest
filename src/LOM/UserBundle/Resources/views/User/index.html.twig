@@ -8,12 +8,9 @@
             <tr>
                 <th>Id</th>
                 <th>Username</th>
-                <th>Password</th>
                 <th>Isactive</th>
                 <th>Fullname</th>
                 <th>Institution</th>
-                <th>Reset_expires</th>
-                <th>Reset_code</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,12 +19,9 @@
             <tr>
                 <td><a href="{{ path('admin_user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.username }}</td>
-                <td>{{ entity.password }}</td>
                 <td>{{ entity.isActive }}</td>
                 <td>{{ entity.fullname }}</td>
                 <td>{{ entity.institution }}</td>
-                <td>{% if entity.resetexpires %}{{ entity.resetexpires|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.resetcode }}</td>
                 <td>
                 <ul>
                     <li>
