@@ -23,6 +23,7 @@ namespace LOM\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

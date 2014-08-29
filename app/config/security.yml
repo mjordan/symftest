@@ -10,8 +10,10 @@ security:
 
     providers:
         main:
-            entity: { class: LOMUserBundle:User }
-
+            entity:
+                class: LOMUserBundle:User
+                property: username
+                
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
