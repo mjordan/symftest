@@ -1,0 +1,8 @@
+Hello {{ user.fullname }}. Welcome to LOCKS-O-MATTIC.
+
+You must set your password before you can login. Your password reset code is
+{{ reset_code }} and it expires at {{ user.getResetExpires }}.
+
+Visit this link to reset your password:
+
+{{ url('password_confirm', {'username' : user.username, 'resetcode' : reset_code } ) }}

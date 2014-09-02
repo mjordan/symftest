@@ -42,8 +42,29 @@ class UserController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $password = md5(time() . rand() . "not a valid password.");
             $entity->setPassword($password);
+
+            $resetCode = sha1(time() . rand() . "some salty string.");
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+            $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
+
+            $entity->setResetCode($resetHash);
+            $entity->setResetExpires((new \DateTime())->add(new \DateInterval('P1D')));
+
             $em->persist($entity);
             $em->flush();
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject("LOCKSS-O-MATIC Password Reset")
+                    ->setFrom("mjoyce@sfu.ca")
+                    ->setTo($entity->getUsername())
+                    ->setBody(
+                    $this->renderView(
+                            'LOMUserBundle:Admin:welcome_newuser.txt.twig', array(
+                        'user' => $entity,
+                        'reset_code' => $resetCode
+            )));
+            $this->get('mailer')->send($message);
 
             return $this->redirect($this->generateUrl('admin_user_show', array('id' => $entity->getId())));
         }
