@@ -35,7 +35,7 @@ class SecurityController extends Controller {
         // check for login errors
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } elseif ($session !== null && $session->has(SecurityContext::ACCESS_DENIED_ERROR)) {
+        } else {
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
         }
@@ -48,6 +48,61 @@ class SecurityController extends Controller {
                     'last_username' => $lastUsername,
                     'error' => $error,
         ));
+    }
+
+    /**
+     * show the lost password form
+     */
+    public function lostPasswordAction(Request $request) {
+        $session = $request->getSession();
+        // last username entered by the user
+        $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
+
+        return $this->render(
+                        "LOMUserBundle:Security:login_reset.html.twig", array(
+                    'last_username' => $lastUsername,
+        ));
+    }
+
+    /**
+     * Accept the form post, mangle the user in the db, send the email.
+     */
+    public function sendPasswordAction(Request $request) {
+        $username = $request->request->get('username');
+
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $entity = $em->getRepository('LOMUserBundle:User')->loadUserByUsername($username);
+            $entity->setResetCode(md5(time() . rand() . "some salty string."));
+            $entity->setResetExpires(new \DateTime("+24H"));
+
+            $em->flush();
+        } catch (Exception $ex) {
+            // do some loging here, but don't tell the user - that's a security error.
+        }
+
+        // mangle the user here.
+        // send the token.
+
+        return $this->render(
+                        "LOMUserBundle:Security:login_sent.html.twig", array(
+                    'username' => $username
+        ));
+    }
+
+    /**
+     * Show the reset password form
+     */
+    public function resetPasswordAction(Request $request) {
+
+    }
+
+    /**
+     * Do the password reset.
+     */
+    public function newPasswordAction(Request $request) {
+        
     }
 
 }

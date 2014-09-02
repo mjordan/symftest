@@ -39,6 +39,10 @@ security:
             pattern: ^/login$
             anonymous: ~
 
+        reset_firewall:
+            pattern: ^/reset
+            anonymous: ~
+
         lom_users:
             pattern:    ^/
             form_login:

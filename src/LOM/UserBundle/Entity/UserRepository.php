@@ -19,9 +19,8 @@ class UserRepository extends EntityRepository {
 //	inner join lom_roles
 //		on role_id = lom_roles.id;
     public function loadUserByUsername($username) {
-        $q = $this->createQueryBuilder('u, r')
+        $q = $this->createQueryBuilder('u')
                 ->where('u.username = :username')
-                ->leftJoin('u.roles', 'r')
                 ->setParameter('username', $username)
                 ->getQuery();
         $user = null;

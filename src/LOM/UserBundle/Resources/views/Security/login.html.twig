@@ -1,8 +1,12 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
+
 {% if error %}
-<div>{{ error.message }}</div>
+<div>
+{{ error.message }}
+    <p><a href="{{ path('login_reset') }}">Password reset</a></p>
+</div>
 {% endif %}
 
 <form action="{{ path('login_check') }}" method="post">

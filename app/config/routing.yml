@@ -11,3 +11,11 @@ login_check:
 
 logout:
     path: /logout
+
+login_reset:
+    path: /reset
+    defaults: { _controller: LOMUserBundle:Security:lostPassword }
+
+login_send:
+    path: /reset/send
+    defaults: { _controller: LOMUserBundle:Security:sendPassword }
