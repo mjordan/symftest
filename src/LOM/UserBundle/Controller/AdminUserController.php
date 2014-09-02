@@ -13,7 +13,7 @@ use LOM\UserBundle\Form\AdminChangePasswordType;
  * User controller.
  *
  */
-class UserController extends Controller {
+class AdminUserController extends Controller {
 
     /**
      * Lists all User entities.
@@ -24,7 +24,7 @@ class UserController extends Controller {
 
         $entities = $em->getRepository('LOMUserBundle:User')->findAll();
 
-        return $this->render('LOMUserBundle:User:index.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:index.html.twig', array(
                     'entities' => $entities,
         ));
     }
@@ -60,7 +60,7 @@ class UserController extends Controller {
                     ->setTo($entity->getUsername())
                     ->setBody(
                     $this->renderView(
-                            'LOMUserBundle:Admin:welcome_newuser.txt.twig', array(
+                            'LOMUserBundle:AdminUser:welcome_newuser.txt.twig', array(
                         'user' => $entity,
                         'reset_code' => $resetCode
             )));
@@ -69,7 +69,7 @@ class UserController extends Controller {
             return $this->redirect($this->generateUrl('admin_user_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('LOMUserBundle:User:new.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:new.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
         ));
@@ -101,7 +101,7 @@ class UserController extends Controller {
         $entity = new User();
         $form = $this->createCreateForm($entity);
 
-        return $this->render('LOMUserBundle:User:new.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:new.html.twig', array(
                     'entity' => $entity,
                     'form' => $form->createView(),
         ));
@@ -122,7 +122,7 @@ class UserController extends Controller {
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('LOMUserBundle:User:show.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:show.html.twig', array(
                     'entity' => $entity,
                     'delete_form' => $deleteForm->createView(),
         ));
@@ -144,7 +144,7 @@ class UserController extends Controller {
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('LOMUserBundle:User:edit.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -191,7 +191,7 @@ class UserController extends Controller {
             return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
         }
 
-        return $this->render('LOMUserBundle:User:edit.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
@@ -209,7 +209,7 @@ class UserController extends Controller {
 
         $passwordForm = $this->createPasswordForm($entity);
 
-        return $this->render('LOMUserBundle:User:password.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:password.html.twig', array(
                     'entity' => $entity,
                     'password_form' => $passwordForm->createView(),
         ));
@@ -248,7 +248,7 @@ class UserController extends Controller {
             return $this->redirect($this->generateUrl('admin_user_show', array('id' => $id)));
         }
 
-        return $this->render('LOMUserBundle:User:password.html.twig', array(
+        return $this->render('LOMUserBundle:AdminUser:password.html.twig', array(
                     'entity' => $entity,
                     'password_form' => $passwordForm->createView(),
         ));

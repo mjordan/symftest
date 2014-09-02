@@ -1,0 +1,39 @@
+admin_user:
+    path:     /
+    defaults: { _controller: "LOMUserBundle:AdminUser:index" }
+
+admin_user_show:
+    path:     /{id}/show
+    defaults: { _controller: "LOMUserBundle:AdminUser:show" }
+
+admin_user_new:
+    path:     /new
+    defaults: { _controller: "LOMUserBundle:AdminUser:new" }
+
+admin_user_create:
+    path:     /create
+    defaults: { _controller: "LOMUserBundle:AdminUser:create" }
+    requirements: { _method: post }
+
+admin_user_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "LOMUserBundle:AdminUser:edit" }
+
+admin_user_update:
+    path:     /{id}/update
+    defaults: { _controller: "LOMUserBundle:AdminUser:update" }
+    requirements: { _method: post|put }
+
+admin_user_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "LOMUserBundle:AdminUser:delete" }
+    requirements: { _method: post|delete }
+
+admin_user_password:
+    path:   /{id}/password
+    defaults: {_controller: "LOMUserBundle:AdminUser:password" }
+
+admin_user_password_update:
+    path:     /{id}/password_update
+    defaults: {_controller: "LOMUserBundle:AdminUser:updatePassword" }
+    requirements: { _method: post|put }

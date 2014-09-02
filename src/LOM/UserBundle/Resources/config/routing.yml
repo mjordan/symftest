@@ -3,11 +3,11 @@ index:
     defaults: { _controller: LOMUserBundle:Default:index }
 
 LOMUserBundle_admin_role:
-        resource: "@LOMUserBundle/Resources/config/routing/role.yml"
+        resource: "@LOMUserBundle/Resources/config/routing/admin_role.yml"
         prefix:   /admin/role
 
 LOMUserBundle_admin_user:
-        resource: "@LOMUserBundle/Resources/config/routing/user.yml"
+        resource: "@LOMUserBundle/Resources/config/routing/admin_user.yml"
         prefix:   /admin/user
 
 LOMUserBundle_admin:

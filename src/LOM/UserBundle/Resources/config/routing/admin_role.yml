@@ -1,0 +1,30 @@
+admin_role:
+    path:     /
+    defaults: { _controller: "LOMUserBundle:AdminRole:index" }
+
+admin_role_show:
+    path:     /{id}/show
+    defaults: { _controller: "LOMUserBundle:AdminRole:show" }
+
+admin_role_new:
+    path:     /new
+    defaults: { _controller: "LOMUserBundle:AdminRole:new" }
+
+admin_role_create:
+    path:     /create
+    defaults: { _controller: "LOMUserBundle:AdminRole:create" }
+    requirements: { _method: post }
+
+admin_role_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "LOMUserBundle:AdminRole:edit" }
+
+admin_role_update:
+    path:     /{id}/update
+    defaults: { _controller: "LOMUserBundle:AdminRole:update" }
+    requirements: { _method: post|put }
+
+admin_role_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "LOMUserBundle:AdminRole:delete" }
+    requirements: { _method: post|delete }

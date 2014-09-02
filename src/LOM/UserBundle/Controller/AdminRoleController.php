@@ -12,8 +12,7 @@ use LOM\UserBundle\Form\RoleType;
  * Role controller.
  *
  */
-class RoleController extends Controller
-{
+class AdminRoleController extends Controller {
 
     /**
      * Lists all Role entities.
@@ -25,8 +24,8 @@ class RoleController extends Controller
 
         $entities = $em->getRepository('LOMUserBundle:Role')->findAll();
 
-        return $this->render('LOMUserBundle:Role:index.html.twig', array(
-            'entities' => $entities,
+        return $this->render('LOMUserBundle:AdminRole:index.html.twig', array(
+                    'entities' => $entities,
         ));
     }
     /**
@@ -47,8 +46,8 @@ class RoleController extends Controller
             return $this->redirect($this->generateUrl('admin_role_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('LOMUserBundle:Role:new.html.twig', array(
-            'entity' => $entity,
+        return $this->render('LOMUserBundle:AdminRole:new.html.twig', array(
+                    'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
@@ -81,8 +80,8 @@ class RoleController extends Controller
         $entity = new Role();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('LOMUserBundle:Role:new.html.twig', array(
-            'entity' => $entity,
+        return $this->render('LOMUserBundle:AdminRole:new.html.twig', array(
+                    'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
@@ -103,8 +102,8 @@ class RoleController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('LOMUserBundle:Role:show.html.twig', array(
-            'entity'      => $entity,
+        return $this->render('LOMUserBundle:AdminRole:show.html.twig', array(
+                    'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -126,8 +125,8 @@ class RoleController extends Controller
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('LOMUserBundle:Role:edit.html.twig', array(
-            'entity'      => $entity,
+        return $this->render('LOMUserBundle:AdminRole:edit.html.twig', array(
+                    'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -175,8 +174,8 @@ class RoleController extends Controller
             return $this->redirect($this->generateUrl('admin_role_edit', array('id' => $id)));
         }
 
-        return $this->render('LOMUserBundle:Role:edit.html.twig', array(
-            'entity'      => $entity,
+        return $this->render('LOMUserBundle:AdminRole:edit.html.twig', array(
+                    'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
