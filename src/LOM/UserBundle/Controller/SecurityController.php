@@ -25,6 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use LOM\UserBundle\Form\UserResetPasswordType;
 
 class SecurityController extends Controller {
 
@@ -66,7 +67,7 @@ class SecurityController extends Controller {
         $lastUsername = (null === $session) ? '' : $session->get(SecurityContextInterface::LAST_USERNAME);
 
         return $this->render(
-                        "LOMUserBundle:Security:login_reset.html.twig", array(
+                        "LOMUserBundle:Security:lost_password.html.twig", array(
                     'last_username' => $lastUsername,
         ));
     }
@@ -88,7 +89,7 @@ class SecurityController extends Controller {
             $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
 
             $entity->setResetCode($resetHash);
-            $entity->setResetExpires(new \DateTime("+24H"));
+            $entity->setResetExpires((new \DateTime())->add(new \DateInterval('P1D')));
             $em->flush();
 
             $message = \Swift_Message::newInstance()
@@ -97,7 +98,7 @@ class SecurityController extends Controller {
                     ->setTo($entity->getUsername())
                     ->setBody(
                     $this->renderView(
-                            'LOMUserBundle:Security:password_reset.txt.twig', array(
+                            'LOMUserBundle:Security:password_email.txt.twig', array(
                         'user' => $entity,
                         'reset_code' => $resetCode
             )));
@@ -112,16 +113,34 @@ class SecurityController extends Controller {
         // send the token.
 
         return $this->render(
-                        "LOMUserBundle:Security:login_sent.html.twig", array(
+                        "LOMUserBundle:Security:password_sent.html.twig", array(
                     'username' => $username
         ));
+    }
+
+    private function createPasswordResetForm(Request $request) {
+        $username = $request->query->get('username');
+        $resetcode = $request->query->get('resetcode');
+
+        $logger = $this->get('logger');
+        $logger->debug('Request parameters: ' . $username . ' ' . $resetcode);
+
+        $form = $this->createForm(new UserResetPasswordType($username, $resetcode), null, array(
+            'action' => $this->generateUrl('password_changed'),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Reset password'));
+        return $form;
     }
 
     /**
      * Show the reset password form
      */
-    public function resetPasswordAction(Request $request) {
-
+    public function confirmPasswordAction(Request $request) {
+        $form = $this->createPasswordResetForm($request);
+        return $this->render('LOMUserBundle:Security:password_reset.html.twig', array(
+                    'reset_form' => $form->createView(),
+        ));
     }
 
     /**
