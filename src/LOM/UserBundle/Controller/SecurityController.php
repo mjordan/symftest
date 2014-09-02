@@ -83,7 +83,7 @@ class SecurityController extends Controller {
         try {
             $entity = $em->getRepository('LOMUserBundle:User')->loadUserByUsername($username);
 
-            $resetCode = md5(time() . rand() . "some salty string.");
+            $resetCode = sha1(time() . rand() . "some salty string.");
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
             $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
@@ -122,9 +122,6 @@ class SecurityController extends Controller {
         $username = $request->query->get('username');
         $resetcode = $request->query->get('resetcode');
 
-        $logger = $this->get('logger');
-        $logger->debug('Request parameters: ' . $username . ' ' . $resetcode);
-
         $form = $this->createForm(new UserResetPasswordType($username, $resetcode), null, array(
             'action' => $this->generateUrl('password_changed'),
             'method' => 'POST',
@@ -146,8 +143,40 @@ class SecurityController extends Controller {
     /**
      * Do the password reset.
      */
-    public function newPasswordAction(Request $request) {
-        
+    public function changedPasswordAction(Request $request) {
+        $form = $this->createPasswordResetForm($request);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $username = $form->get('username')->getData();
+            $resetcode = $form->get('resetcode')->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('LOMUserBundle:User')->loadUserByUsername($username);
+
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+
+            $now = new \DateTime();
+            if ($now < $entity->getResetExpires()) {
+                throw new \Exception("Reset expired.");
+            }
+
+            if (!$encoder->isPasswordValid($entity->getResetCode(), (string) $resetcode, $entity->getSalt())) {
+                throw new \Exception("Reset code is not valid.");
+            }
+
+            $newPassword = $form->get('password')->getData();
+            $newPasswordHash = $encoder->encodePassword($newPassword, $entity->getSalt());
+            $entity->setPassword($newPasswordHash);
+
+            $entity->setResetCode(null);
+            $entity->setResetExpires(null);
+
+            $em->flush();
+
+            return $this->render('LOMUserBundle:Security:password_changed.html.twig');
+        }
     }
 
 }
