@@ -2,7 +2,7 @@
 
 /*
  * Copyright (C) Error: on line 4, column 33 in Templates/Licenses/license-gpl20.txt
-  The string doesn't match the expected date/time format. The string to parse was: "27-Aug-2014". The expected format was: "MMM d, yyyy". mjoyce
+  The string doesn't match the expected date/time format. The string to parse was: "29-Aug-2014". The expected format was: "MMM d, yyyy". mjoyce
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,19 +19,34 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-namespace LOM\UserBundle\Controller;
+namespace LOM\UserBundle\Form\Model;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class DefaultController extends Controller {
+class UserChangePassword {
 
     /**
-     * Show networks, user info, status of deposits?
-     * @return type
+     * @Assert\Length(
+     *     min = 6,
+     *     minMessage = "Password should by at least 6 chars long"
+     * )
      */
-    public function indexAction() {
-        return $this->render("LOMUserBundle:Default:index.html.twig");
+    protected $newPassword;
+
+    /**
+     * @SecurityAssert\UserPassword(
+     *   message = "Wrong value for your current password."
+     * )
+     */
+    protected $oldPassword;
+
+    public function setNewPassword($newPassword) {
+        $this->newPassword = $newPassword;
+    }
+
+    public function getNewPassword() {
+        return $this->newPassword;
     }
 
 }

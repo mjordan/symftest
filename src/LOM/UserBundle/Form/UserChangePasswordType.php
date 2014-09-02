@@ -25,18 +25,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class UserResetPasswordType extends AbstractType {
+class UserChangePasswordType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('username', 'text', array(
-                    'label' => 'Username',
-                    'data' => $this->username,
-                ))
-                ->add('resetcode', 'text', array(
-                    'label' => 'Reset code',
-                    'data' => $this->resetcode,
-                ))
-                ->add('password', 'repeated', array(
+        $builder->add('oldpassword', 'password')
+                ->add('newpassword', 'repeated', array(
                     'type' => 'password',
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
@@ -45,8 +38,14 @@ class UserResetPasswordType extends AbstractType {
         ));
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+        $resolver->setDefaults(array(
+            'data_class' => 'LOM\UserBundle\Entity\User',
+        ));
+    }
+
     public function getName() {
-        return 'user_reset_password';
+        return 'user_change_password';
     }
 
 }

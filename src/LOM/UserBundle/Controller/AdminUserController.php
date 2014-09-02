@@ -5,7 +5,7 @@ namespace LOM\UserBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use LOM\UserBundle\Entity\User;
-use LOM\UserBundle\Form\UserType;
+use LOM\UserBundle\Form\AdminUserType;
 use LOM\UserBundle\Form\Model\AdminChangePassword;
 use LOM\UserBundle\Form\AdminChangePasswordType;
 
@@ -83,7 +83,7 @@ class AdminUserController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm(User $entity) {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new AdminUserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_create'),
             'method' => 'POST',
         ));
@@ -159,7 +159,7 @@ class AdminUserController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createEditForm(User $entity) {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new AdminUserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

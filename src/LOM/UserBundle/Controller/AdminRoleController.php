@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use LOM\UserBundle\Entity\Role;
-use LOM\UserBundle\Form\RoleType;
+use LOM\UserBundle\Form\AdminRoleType;
 
 /**
  * Role controller.
@@ -61,7 +61,7 @@ class AdminRoleController extends Controller {
      */
     private function createCreateForm(Role $entity)
     {
-        $form = $this->createForm(new RoleType(), $entity, array(
+        $form = $this->createForm(new AdminRoleType(), $entity, array(
             'action' => $this->generateUrl('admin_role_create'),
             'method' => 'POST',
         ));
@@ -141,7 +141,7 @@ class AdminRoleController extends Controller {
     */
     private function createEditForm(Role $entity)
     {
-        $form = $this->createForm(new RoleType(), $entity, array(
+        $form = $this->createForm(new AdminRoleType(), $entity, array(
             'action' => $this->generateUrl('admin_role_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
