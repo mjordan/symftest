@@ -280,8 +280,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      * @param \DateTime $resetExpires
      * @return User
      */
-    public function setResetExpires($resetExpires)
-    {
+    public function setResetExpires(\DateTime $resetExpires) {
         $this->reset_expires = $resetExpires;
 
         return $this;
@@ -290,11 +289,11 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     /**
      * Get reset_expires
      *
-     * @return \DateTime 
+     * @return String
      */
     public function getResetExpires()
     {
-        return $this->reset_expires;
+        return $this->reset_expires->format(\DateTime::RFC850);
     }
 
     /**

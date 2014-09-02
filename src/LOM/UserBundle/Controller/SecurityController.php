@@ -28,6 +28,13 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SecurityController extends Controller {
 
+    /**
+     * Show the login form. Actual authentication is handled internally by
+     * symfony.
+     *
+     * @param Request $request
+     * @return type rendered page
+     */
     public function loginAction(Request $request) {
         $session = $request->getSession();
         $error = "";
@@ -74,13 +81,32 @@ class SecurityController extends Controller {
 
         try {
             $entity = $em->getRepository('LOMUserBundle:User')->loadUserByUsername($username);
-            $entity->setResetCode(md5(time() . rand() . "some salty string."));
-            $entity->setResetExpires(new \DateTime("+24H"));
 
+            $resetCode = md5(time() . rand() . "some salty string.");
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+            $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
+
+            $entity->setResetCode($resetHash);
+            $entity->setResetExpires(new \DateTime("+24H"));
             $em->flush();
+
+            $message = \Swift_Message::newInstance()
+                    ->setSubject("LOCKSS-O-MATIC Password Reset")
+                    ->setFrom("mjoyce@sfu.ca")
+                    ->setTo($entity->getUsername())
+                    ->setBody(
+                    $this->renderView(
+                            'LOMUserBundle:Security:password_reset.txt.twig', array(
+                        'user' => $entity,
+                        'reset_code' => $resetCode
+            )));
+            $this->get('mailer')->send($message);
         } catch (Exception $ex) {
             // do some loging here, but don't tell the user - that's a security error.
         }
+
+
 
         // mangle the user here.
         // send the token.
