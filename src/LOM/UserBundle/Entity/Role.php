@@ -51,6 +51,18 @@ class Role implements RoleInterface {
     private $role;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
+     * @ORM\joinColumn(name="id", referencedColumnName="parent_id")
+     */
+    private $children;
+
+    /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
      */
     private $users;
@@ -176,5 +188,61 @@ class Role implements RoleInterface {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \LOM\UserBundle\Entity\Role $parent
+     * @return Role
+     */
+    public function setParent(\LOM\UserBundle\Entity\Role $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \LOM\UserBundle\Entity\Role 
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add children
+     *
+     * @param \LOM\UserBundle\Entity\Role $children
+     * @return Role
+     */
+    public function addChild(\LOM\UserBundle\Entity\Role $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param \LOM\UserBundle\Entity\Role $children
+     */
+    public function removeChild(Role $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children->toArray();
     }
 }

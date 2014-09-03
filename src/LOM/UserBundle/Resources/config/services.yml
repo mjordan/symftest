@@ -2,6 +2,10 @@ parameters:
 #    lom_user.example.class: LOM\UserBundle\Example
 
 services:
+    security.role_hierarchy:
+        class: LOM\UserBundle\Security\Role\RoleHierarchy
+        arguments: [%security.role_hierarchy.roles%, @doctrine.orm.entity_manager ]
+
 #    lom_user.example:
 #        class: %lom_user.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

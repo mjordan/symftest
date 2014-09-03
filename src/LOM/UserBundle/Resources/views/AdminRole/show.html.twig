@@ -21,6 +21,14 @@
                 <th>Description</th>
                 <td>{{ entity.description }}</td>
             </tr>
+            <tr>
+                <th>Parent</th>
+                <td>{{ entity.parent }}</td>
+            </tr>
+            <tr>
+                <th>Children</th>
+                <td>{% for role in entity.getChildren %} {{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+            </tr>
         </tbody>
     </table>
 

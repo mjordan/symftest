@@ -17,7 +17,8 @@ class AdminRoleType extends AbstractType {
             ->add('name')
             ->add('role')
             ->add('description')
-            ->add('users')
+            ->add('parent')
+                ->add('users')
         ;
     }
     
