@@ -22,15 +22,24 @@
                 <td>{{ entity.description }}</td>
             </tr>
             <tr>
-                <th>Parent</th>
-                <td>{{ entity.parent }}</td>
+                <th>Parent Role</th>
+                <td>{% if entity.parent %}<a href="{{ path('admin_role_show', {id:entity.parent.id} ) }}">{{ entity.parent }}</a>{% endif %}</td>
             </tr>
             <tr>
-                <th>Children</th>
-                <td>{% for role in entity.getChildren %} {{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
+                <th>Child Roles</th>
+                <td>{% for role in entity.getChildren %}
+                    <a href="{{path('admin_role_show', {id:role.id})}}">{{ role.name }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
+
+    <ul>
+        {% for user in entity.getUsers %}
+        <li><a href="{{ path('admin_user_show', {id:user.id} ) }}">{{ user.username }}</a></li>
+        {% endfor %}
+    </ul>
 
         <ul class="record_actions">
     <li>

@@ -27,16 +27,9 @@
         </tr>
         <tr>
             <th>Explicit Roles</th>
-            <td>{% for role in entity.getRoles %} {{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
-        </tr>
-        <tr>
-            <th>Implicit Roles</th>
-            <td>
-                <ul>
-                    {% for role in allRoles %}
-                    <li>{{ role.name }} - {% if is_granted(role.role) %}YES{% else %}NO{% endif %}</li>
+            <td>{% for role in entity.roles %}
+                <a href="{{path('admin_role_show', {id:role.id})}}">{{ role.name }}</a>{% if not loop.last %}, {% endif %}
                     {% endfor %}
-                </ul>
             </td>
         </tr>
     </tbody>

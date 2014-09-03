@@ -164,7 +164,7 @@ class Role implements RoleInterface {
      */
     public function getUsers()
     {
-        return $this->users;
+        return $this->users->toArray();
     }
 
     /**
