@@ -1,8 +1,7 @@
 <?php
 
-/* 
- * Copyright (C) Error: on line 4, column 33 in Templates/Licenses/license-gpl20.txt
-The string doesn't match the expected date/time format. The string to parse was: "29-Aug-2014". The expected format was: "MMM d, yyyy". mjoyce
+/*
+ * Copyright (C) 2014 mjoyce
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
