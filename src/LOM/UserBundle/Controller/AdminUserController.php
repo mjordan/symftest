@@ -18,7 +18,7 @@ class AdminUserController extends Controller {
     /**
      * Lists all User entities.
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Response A Response instance
      *
      */
     public function indexAction() {

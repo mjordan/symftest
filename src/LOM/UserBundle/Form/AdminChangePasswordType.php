@@ -25,8 +25,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Form type definition for an administrative password change.
+ */
 class AdminChangePasswordType extends AbstractType {
 
+    /**
+     * Build the admin password form.
+     *
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('newPassword', 'repeated', array(
             'type' => 'password',
@@ -37,12 +46,22 @@ class AdminChangePasswordType extends AbstractType {
         ));
     }
 
+    /**
+     * Set the default form options, describing the model expected by the form.
+     *
+     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'LOM\UserBundle\Form\Model\AdminChangePassword',
         ));
     }
 
+    /**
+     * Get the name of the form.
+     *
+     * @return string
+     */
     public function getName() {
         return 'admin_change_password';
     }

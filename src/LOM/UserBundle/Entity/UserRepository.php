@@ -13,11 +13,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends EntityRepository {
 
-//    from
-//	lom_users inner join user_role
-//		on lom_users.id = user_id
-//	inner join lom_roles
-//		on role_id = lom_roles.id;
+    /**
+     * Find a user by username. Necessary for the login system.
+     *
+     * @param string $username
+     *
+     * @return User
+     *
+     * @throws UsernameNotFoundException
+     */
     public function loadUserByUsername($username) {
         $q = $this->createQueryBuilder('u')
                 ->where('u.username = :username')
@@ -35,6 +39,15 @@ class UserRepository extends EntityRepository {
         return $user;
     }
 
+    /**
+     * Refresh/reload a user from the database
+     *
+     * @param \Symfony\Component\Security\Core\User\UserInterface $user
+     *
+     * @return User
+     *
+     * @throws UnsupportedUserException
+     */
     public function refreshUser(UserInterface $user) {
         $class = get_class($user);
         if (!$this->supportsClass($class)) {
@@ -43,6 +56,13 @@ class UserRepository extends EntityRepository {
         return $this->find($user->getId());
     }
 
+    /**
+     * Check if this repository supports storing/fetching another class.
+     *
+     * @param string $class
+     *
+     * @return boolean
+     */
     public function supportsClass($class) {
         return $this->getEntityName() === $class || is_subclass_of($class, $this->getEntityName());
     }

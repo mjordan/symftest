@@ -27,14 +27,18 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use LOM\UserBundle\Form\UserResetPasswordType;
 
+/**
+ * SecurityController handles logins and password resets.
+ */
 class SecurityController extends Controller {
 
     /**
      * Show the login form. Actual authentication is handled internally by
      * symfony.
      *
-     * @param Request $request
-     * @return type rendered page
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function loginAction(Request $request) {
         $session = $request->getSession();
@@ -60,6 +64,10 @@ class SecurityController extends Controller {
 
     /**
      * show the lost password form
+     *
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function lostPasswordAction(Request $request) {
         $session = $request->getSession();
@@ -74,6 +82,10 @@ class SecurityController extends Controller {
 
     /**
      * Accept the form post, mangle the user in the db, send the email.
+     *
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function sendPasswordAction(Request $request) {
         $username = $request->request->get('username');
@@ -107,17 +119,19 @@ class SecurityController extends Controller {
             // do some loging here, but don't tell the user - that's a security error.
         }
 
-
-
-        // mangle the user here.
-        // send the token.
-
         return $this->render(
                         "LOMUserBundle:Security:password_sent.html.twig", array(
                     'username' => $username
         ));
     }
 
+    /**
+     * Build the password reset form.
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createPasswordResetForm(Request $request) {
         $username = $request->query->get('username');
         $resetcode = $request->query->get('resetcode');
@@ -132,6 +146,10 @@ class SecurityController extends Controller {
 
     /**
      * Show the reset password form
+     *
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function confirmPasswordAction(Request $request) {
         $form = $this->createPasswordResetForm($request);
@@ -142,6 +160,10 @@ class SecurityController extends Controller {
 
     /**
      * Do the password reset.
+     * 
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function changedPasswordAction(Request $request) {
         $form = $this->createPasswordResetForm($request);

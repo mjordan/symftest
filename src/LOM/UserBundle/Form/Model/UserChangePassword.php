@@ -24,6 +24,10 @@ namespace LOM\UserBundle\Form\Model;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Form model for a user password change - requires the user to enter the old
+ * password correctly.
+ */
 class UserChangePassword {
 
     /**
@@ -41,18 +45,38 @@ class UserChangePassword {
      */
     protected $oldPassword;
 
+    /**
+     * Set the new password
+     *
+     * @param string $newPassword
+     */
     public function setNewPassword($newPassword) {
         $this->newPassword = $newPassword;
     }
 
+    /**
+     * Get the new password
+     *
+     * @return string
+     */
     public function getNewPassword() {
         return $this->newPassword;
     }
 
+    /**
+     * Set the old password
+     *
+     * @param string $oldPassword
+     */
     public function setOldPassword($oldPassword) {
         $this->oldPassword = $oldPassword;
     }
 
+    /**
+     * Get the old password
+     *
+     * @return string
+     */
     public function getOldPassword() {
         return $this->oldPassword;
     }

@@ -27,6 +27,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Roles are the heart of the permissions system.
+ *
  * @ORM\Table(name="lom_roles")
  * @ORM\Entity()
  * @UniqueEntity(fields="role", message="Roles must be unique.")
@@ -34,6 +36,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Role implements RoleInterface {
 
     /**
+     * Role ID.
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -41,37 +45,55 @@ class Role implements RoleInterface {
     private $id;
 
     /**
-     * @ORM\Column(name="name", type="string", length=30)
+     * Name of the role. Must match ROLE_* and be identical to $role.
+     *
+     * @ORM\Column(name="name", type="string", length=20, unique=true)
      */
     private $name;
 
     /**
+     * The actual role. Must match ROLE_* and be identical to $name.
+     *
      * @ORM\Column(name="role", type="string", length=20, unique=true)
      */
     private $role;
 
     /**
+     * Roles are hierarchical. This is the parent. The hierarchy is defined
+     * and filed out by LOM\UserBundle\Security\RoleHierarchy.
+     *
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
      */
     private $parent;
 
     /**
+     * The children of this role.
+     *
      * @ORM\OneToMany(targetEntity="Role", mappedBy="parent")
      * @ORM\joinColumn(name="id", referencedColumnName="parent_id")
      */
     private $children;
 
     /**
+     * The users in this role.
+     *
      * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
      */
     private $users;
 
     /**
+     * The description fo the role.
+     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
 
+    /**
+     * Get the role
+     *
+     * @return string
+     */
     public function getRole() {
         return $this->role;
     }
@@ -84,6 +106,11 @@ class Role implements RoleInterface {
         $this->users = new ArrayCollection();
     }
 
+    /**
+     * Return a string representation of the role.
+     *
+     * @return string
+     */
     public function __toString() {
         return $this->role;
     }
@@ -102,6 +129,7 @@ class Role implements RoleInterface {
      * Set name
      *
      * @param string $name
+     * 
      * @return Role
      */
     public function setName($name)
@@ -125,6 +153,7 @@ class Role implements RoleInterface {
      * Set role
      *
      * @param string $role
+     *
      * @return Role
      */
     public function setRole($role)
@@ -138,6 +167,7 @@ class Role implements RoleInterface {
      * Add users
      *
      * @param \LOM\UserBundle\Entity\User $users
+     *
      * @return Role
      */
     public function addUser(\LOM\UserBundle\Entity\User $users)
@@ -160,7 +190,7 @@ class Role implements RoleInterface {
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return User[]
      */
     public function getUsers()
     {
@@ -171,6 +201,7 @@ class Role implements RoleInterface {
      * Set description
      *
      * @param string $description
+     *
      * @return Role
      */
     public function setDescription($description)
@@ -194,6 +225,7 @@ class Role implements RoleInterface {
      * Set parent
      *
      * @param \LOM\UserBundle\Entity\Role $parent
+     *
      * @return Role
      */
     public function setParent(\LOM\UserBundle\Entity\Role $parent = null)
@@ -217,6 +249,7 @@ class Role implements RoleInterface {
      * Add children
      *
      * @param \LOM\UserBundle\Entity\Role $children
+     *
      * @return Role
      */
     public function addChild(\LOM\UserBundle\Entity\Role $children)
@@ -239,7 +272,7 @@ class Role implements RoleInterface {
     /**
      * Get children
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Role[]
      */
     public function getChildren()
     {

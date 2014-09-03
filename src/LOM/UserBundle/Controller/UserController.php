@@ -10,7 +10,7 @@ use LOM\UserBundle\Form\UserChangePasswordType;
 use LOM\UserBundle\Form\Model\UserChangePassword;
 
 /**
- * User controller.
+ * User controller. Lets users edit their own information.
  *
  */
 class UserController extends Controller {
@@ -18,6 +18,7 @@ class UserController extends Controller {
     /**
      * Lists all User entities.
      *
+     * @return Response A Response instance
      */
     public function indexAction() {
         $entity = $this->get('security.context')->getToken()->getUser();
@@ -29,6 +30,7 @@ class UserController extends Controller {
     /**
      * Displays a form to edit an existing User entity.
      *
+     * @return Response A Response instance
      */
     public function editAction() {
         $entity = $this->get('security.context')->getToken()->getUser();
@@ -60,6 +62,9 @@ class UserController extends Controller {
     /**
      * Edits an existing User entity.
      *
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
      */
     public function updateAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -78,6 +83,13 @@ class UserController extends Controller {
         ));
     }
 
+    /**
+     * Manage a password change for a user.
+     *
+     * @param Request $request the request instance
+     *
+     * @return Response A Response instance
+     */
     public function passwordAction(Request $request) {
 
         $changePasswordModel = new UserChangePassword();
