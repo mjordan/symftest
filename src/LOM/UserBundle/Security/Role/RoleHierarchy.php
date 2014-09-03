@@ -24,25 +24,41 @@ namespace LOM\UserBundle\Security\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy as RH;
 use Doctrine\ORM\EntityManager;
 
+/**
+ * LOMUserBundle's RoleHierarchy. Since we store roles in the database, we also
+ * need to store the hierarchy there as well. And since we do that, we need
+ * a way to populate the role hierarchy.
+ */
 class RoleHierarchy extends RH {
 
+    /**
+     * Entity manager to get stuff from the database.
+     *
+     * @var EntityManager $em
+     */
     private $em;
 
     /**
-     * @param array $hierarchy
+     * Build the hierarchy
+     *
+     * @param array $hierarchy default hierarchy (probably empty)
+     * @param EntityManager $em entity manager to get the roles.
+     * 
      */
     public function __construct(array $hierarchy, EntityManager $em) {
         $this->em = $em;
-        parent::__construct($this->buildRolesTree());
+        parent::__construct($this->buildRolesTree($hierarchy));
     }
 
     /**
      * Here we build an array with roles. It looks like a two-levelled tree - just
      * like original Symfony roles are stored in security.yml
+     *
+     * @param array $hierarchy
+     *
      * @return array
      */
-    private function buildRolesTree() {
-        $hierarchy = array();
+    private function buildRolesTree(array $hierarchy) {
         $roles = $this->em->createQuery('select r from LOMUserBundle:Role r')->execute();
         foreach ($roles as $role) {
             if ($role->getParent()) {
