@@ -4,22 +4,19 @@ namespace LOM\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use LOM\UserBundle\Entity\Role;
 use LOM\UserBundle\Form\AdminRoleType;
 
 /**
- * Role controller.
- *
+ * Admin's role controller.
  */
 class AdminRoleController extends Controller {
 
     /**
      * Lists all Role entities.
-     *
+     * @return Response A Response instance
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('LOMUserBundle:Role')->findAll();
@@ -28,12 +25,14 @@ class AdminRoleController extends Controller {
                     'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Role entity.
+     * @param Request $request the request being processed
      *
+     * @return Response A Response instance
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Role();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -48,7 +47,7 @@ class AdminRoleController extends Controller {
 
         return $this->render('LOMUserBundle:AdminRole:new.html.twig', array(
                     'entity' => $entity,
-            'form'   => $form->createView(),
+                    'form' => $form->createView(),
         ));
     }
 
@@ -59,8 +58,7 @@ class AdminRoleController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Role $entity)
-    {
+    private function createCreateForm(Role $entity) {
         $form = $this->createForm(new AdminRoleType(), $entity, array(
             'action' => $this->generateUrl('admin_role_create'),
             'method' => 'POST',
@@ -73,25 +71,26 @@ class AdminRoleController extends Controller {
 
     /**
      * Displays a form to create a new Role entity.
+     * @return Response A Response instance
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Role();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('LOMUserBundle:AdminRole:new.html.twig', array(
                     'entity' => $entity,
-            'form'   => $form->createView(),
+                    'form' => $form->createView(),
         ));
     }
 
     /**
      * Finds and displays a Role entity.
+     * @param int $id The id of the role to display.
      *
+     * @return Response A Response instance
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:Role')->find($id);
@@ -103,17 +102,18 @@ class AdminRoleController extends Controller {
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('LOMUserBundle:AdminRole:show.html.twig', array(
-                    'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
      * Displays a form to edit an existing Role entity.
-     *
+     * @param int $id the ID of the entity to edit.
+     * 
+     * @return Response A Response instance
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:Role')->find($id);
@@ -126,21 +126,20 @@ class AdminRoleController extends Controller {
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('LOMUserBundle:AdminRole:edit.html.twig', array(
-                    'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Role entity.
-    *
-    * @param Role $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Role $entity)
-    {
+     * Creates a form to edit a Role entity.
+     *
+     * @param Role $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Role $entity) {
         $form = $this->createForm(new AdminRoleType(), $entity, array(
             'action' => $this->generateUrl('admin_role_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -150,12 +149,17 @@ class AdminRoleController extends Controller {
 
         return $form;
     }
+
     /**
      * Edits an existing Role entity.
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id the id of the role to edit
+     *
+     * @return Response A Response instance
+     * @throws NotFoundHttpException
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:Role')->find($id);
@@ -175,17 +179,23 @@ class AdminRoleController extends Controller {
         }
 
         return $this->render('LOMUserBundle:AdminRole:edit.html.twig', array(
-                    'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Role entity.
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id the id of the role to delete
+     *
+     * @return Response A Response instance
+     * @throws NotFoundHttpException
+     *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -211,13 +221,12 @@ class AdminRoleController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_role_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+                        ->setAction($this->generateUrl('admin_role_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm();
     }
+
 }

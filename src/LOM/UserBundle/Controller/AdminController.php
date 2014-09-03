@@ -23,8 +23,17 @@ namespace LOM\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Basic admin controller - just shows a static page with links to other
+ * controllers.
+ */
 class AdminController extends Controller {
 
+    /**
+     * Show the admin index.
+     *
+     * @return string
+     */
     public function indexAction() {
         return $this->render(
                         "LOMUserBundle:Admin:index.html.twig", array('users' => $this->getDoctrine()->getRepository('LOMUserBundle:User')->findAll())

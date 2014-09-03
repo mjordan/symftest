@@ -18,6 +18,8 @@ class AdminUserController extends Controller {
     /**
      * Lists all User entities.
      *
+     * @return \Symfony\Component\Form\Form The form
+     *
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
@@ -31,7 +33,9 @@ class AdminUserController extends Controller {
 
     /**
      * Creates a new User entity.
+     * @param Request $request the request being processed
      *
+     * @return Response A Response instance
      */
     public function createAction(Request $request) {
         $entity = new User();
@@ -95,7 +99,8 @@ class AdminUserController extends Controller {
 
     /**
      * Displays a form to create a new User entity.
-     *
+     * 
+     * @return Response A Response instance
      */
     public function newAction() {
         $entity = new User();
@@ -109,6 +114,9 @@ class AdminUserController extends Controller {
 
     /**
      * Finds and displays a User entity.
+     * @param int $id The id of the entity to display.
+     *
+     * @return Response A Response instance
      *
      */
     public function showAction($id) {
@@ -132,7 +140,9 @@ class AdminUserController extends Controller {
 
     /**
      * Displays a form to edit an existing User entity.
+     * @param int $id the ID of the entity to edit.
      *
+     * @return Response A Response instance
      */
     public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
@@ -173,7 +183,11 @@ class AdminUserController extends Controller {
 
     /**
      * Edits an existing User entity.
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id the id of the user to edit
      *
+     * @return Response A Response instance
+     * @throws NotFoundHttpException
      */
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -190,6 +204,7 @@ class AdminUserController extends Controller {
 
         if ($editForm->isValid()) {
             $em->flush();
+
             return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
         }
 
@@ -200,6 +215,15 @@ class AdminUserController extends Controller {
         ));
     }
 
+    /**
+     * Change a user's password
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id the id of the user to edit
+     *
+     * @return Response A Response instance
+     * @throws NotFoundHttpException
+     */
     public function passwordAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
@@ -227,10 +251,12 @@ class AdminUserController extends Controller {
             $this->get('session')->getFlashBag()->add(
                     'notice', 'The password has been changed.'
             );
+
             return $this->redirect($this->generateUrl('admin_user_show', array(
                                 'id' => $entity->getId()
             )));
         }
+
         return $this->render('LOMUserBundle:AdminUser:password.html.twig', array(
                     'entity' => $entity,
                     'password_form' => $form->createView(),
@@ -239,6 +265,11 @@ class AdminUserController extends Controller {
 
     /**
      * Deletes a User entity.
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $id the id of the entity to delete
+     *
+     * @return Response A Response instance
+     * @throws NotFoundHttpException
      *
      */
     public function deleteAction(Request $request, $id) {
@@ -272,8 +303,7 @@ class AdminUserController extends Controller {
                         ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
+                        ->getForm();
     }
 
 }
