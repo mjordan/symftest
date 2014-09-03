@@ -23,8 +23,7 @@ class UserType extends AbstractType {
         $builder
                 ->add('username')
                 ->add('fullname')
-                ->add('institution')
-        ;
+                ->add('institution');
     }
 
     /**
