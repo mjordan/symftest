@@ -28,8 +28,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class UserChangePasswordType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('oldpassword', 'password')
-                ->add('newpassword', 'repeated', array(
+        $builder->add('oldPassword', 'password')
+                ->add('newPassword', 'repeated', array(
                     'type' => 'password',
                     'invalid_message' => 'The password fields must match.',
                     'required' => true,
@@ -40,7 +40,7 @@ class UserChangePasswordType extends AbstractType {
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'LOM\UserBundle\Entity\User',
+            'data_class' => 'LOM\UserBundle\Form\Model\UserChangePassword',
         ));
     }
 

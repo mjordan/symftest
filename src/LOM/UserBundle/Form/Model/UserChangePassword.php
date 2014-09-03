@@ -27,6 +27,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserChangePassword {
 
     /**
+     * @Assert\Type(type="LOM\UserBundle\Entity\User")
+     */
+    protected $user;
+
+    /**
      * @Assert\Length(
      *     min = 6,
      *     minMessage = "Password should by at least 6 chars long"
@@ -47,6 +52,14 @@ class UserChangePassword {
 
     public function getNewPassword() {
         return $this->newPassword;
+    }
+
+    public function setOldPassword($oldPassword) {
+        $this->oldPassword = $oldPassword;
+    }
+
+    public function getOldPassword() {
+        return $this->oldPassword;
     }
 
 }

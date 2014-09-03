@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use LOM\UserBundle\Entity\User;
 use LOM\UserBundle\Form\UserType;
 use LOM\UserBundle\Form\UserChangePasswordType;
+use LOM\UserBundle\Form\Model\UserChangePassword;
 
 /**
  * User controller.
@@ -77,40 +78,32 @@ class UserController extends Controller {
         ));
     }
 
-    public function createPasswordForm(User $entity) {
-        $form = $this->createForm(new UserChangePasswordType(), $entity, array(
-            'action' => $this->generateUrl('user_password_update'),
-            'method' => 'PUT'
-        ));
-        $form->add('submit', 'submit', array('label' => 'Update password'));
-        return $form;
-    }
+    public function passwordAction(Request $request) {
 
-    public function passwordAction() {
-        $entity = $this->get('security.context')->getToken()->getUser();
-        $passwordForm = $this->createPasswordForm($entity);
-        return $this->render('LOMUserBundle:User:password.html.twig', array(
-                    'entity' => $entity,
-                    'password_form' => $passwordForm->createView(),
+        $changePasswordModel = new UserChangePassword();
+        $form = $this->createForm(new UserChangePasswordType(), $changePasswordModel, array(
+            'method' => 'POST'
         ));
-    }
+        $form->add('submit', 'submit', array(
+            'label' => 'Change password',
+        ));
 
-    public function passwordUpdateAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $entity = $this->get('security.context')->getToken()->getUser();
-        $passwordForm = $this->createPasswordForm($entity);
-        if ($passwordForm->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $entity = $this->get('security.context')->getToken()->getUser();
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
-            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
-            $entity->setPassword($password);
+            $newPassword = $form->get('newPassword')->getData();
+            $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
+            $entity->setPassword($newHash);
             $em->flush();
 
             return $this->redirect($this->generateUrl('user'));
         }
         return $this->render('LOMUserBundle:User:password.html.twig', array(
-                    'entity' => $entity,
-                    'password_form' => $passwordForm->createView(),
+                    'password_form' => $form->createView(),
         ));
     }
 
