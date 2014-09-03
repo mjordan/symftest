@@ -100,6 +100,10 @@ class UserController extends Controller {
             $entity->setPassword($newHash);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add(
+                    'notice', 'Your password has been changed.'
+            );
+
             return $this->redirect($this->generateUrl('user'));
         }
         return $this->render('LOMUserBundle:User:password.html.twig', array(

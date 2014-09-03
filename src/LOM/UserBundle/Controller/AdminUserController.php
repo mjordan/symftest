@@ -198,59 +198,40 @@ class AdminUserController extends Controller {
         ));
     }
 
-    public function passwordAction($id) {
+    public function passwordAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $passwordForm = $this->createPasswordForm($entity);
-
-        return $this->render('LOMUserBundle:AdminUser:password.html.twig', array(
-                    'entity' => $entity,
-                    'password_form' => $passwordForm->createView(),
+        $changePasswordModel = new AdminChangePassword();
+        $form = $this->createForm(new AdminChangePasswordType(), $changePasswordModel, array(
+            'method' => 'POST'
         ));
-    }
-
-    private function createPasswordForm(User $entity) {
-        $form = $this->createForm(new AdminChangePasswordType, $entity, array(
-            'action' => $this->generateUrl('admin_user_password_update', array(
-                'id' => $entity->getId()
-            )),
-            'method' => 'PUT',
+        $form->add('submit', 'submit', array(
+            'label' => 'Change password',
         ));
-        $form->add('submit', 'submit', array('label' => 'Update password'));
-        return $form;
-    }
-
-    public function updatePasswordAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('LOMUserBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
-        }
-
-        $passwordForm = $this->createPasswordForm($entity);
-        $passwordForm->handleRequest($request);
-
-        if ($passwordForm->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
-            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
-            $entity->setPassword($password);
+            $newPassword = $form->get('newPassword')->getData();
+            $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
+            $entity->setPassword($newHash);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_user_show', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add(
+                    'notice', 'The password has been changed.'
+            );
+            return $this->redirect($this->generateUrl('admin_user_show', array(
+                                'id' => $entity->getId()
+            )));
         }
-
         return $this->render('LOMUserBundle:AdminUser:password.html.twig', array(
                     'entity' => $entity,
-                    'password_form' => $passwordForm->createView(),
+                    'password_form' => $form->createView(),
         ));
     }
 
