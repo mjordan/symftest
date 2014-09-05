@@ -3,8 +3,16 @@ parameters:
 
 services:
     security.role_hierarchy:
+        # automatically load the role hierarchy.
         class: LOM\UserBundle\Security\Role\RoleHierarchy
         arguments: [%security.role_hierarchy.roles%, @doctrine.orm.entity_manager ]
+
+    lom.security_listener:
+        # automatically clear any passoword reset tokens on a successful login.
+        class: LOM\UserBundle\Listener\LoginListener
+        arguments: [@doctrine]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
 
 #    lom_user.example:
 #        class: %lom_user.example.class%
