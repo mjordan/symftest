@@ -21,8 +21,8 @@ class LoginListener
 
     /**
      * Construct the listener. Parameters for the constructor are defined
-     * in LOM\Resources\config\services.yml 
-     * 
+     * in LOM\Resources\config\services.yml
+     *
      * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
      */
     public function __construct(Doctrine $doctrine)
@@ -31,9 +31,9 @@ class LoginListener
     }
 
     /**
-     * Triggered on a successful login. Set the resetCode and resetExpires 
+     * Triggered on a successful login. Set the resetCode and resetExpires
      * to null, and persist to the database.
-     * 
+     *
      * @param \Symfony\Component\Security\Http\Event\InteractiveLoginEvent $event
      */
     public function onInteractiveLogin(InteractiveLoginEvent $event)
