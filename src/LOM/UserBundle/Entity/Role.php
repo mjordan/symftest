@@ -32,8 +32,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @UniqueEntity(fields="role", message="Roles must be unique.")
  */
-class Role implements RoleInterface {
-
+class Role implements RoleInterface
+{
     /**
      * Role ID.
      *
@@ -93,7 +93,8 @@ class Role implements RoleInterface {
      *
      * @return string
      */
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
 
@@ -110,14 +111,15 @@ class Role implements RoleInterface {
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->role;
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -128,7 +130,7 @@ class Role implements RoleInterface {
      * Set name
      *
      * @param string $name
-     * 
+     *
      * @return Role
      */
     public function setName($name)
@@ -141,7 +143,7 @@ class Role implements RoleInterface {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -213,7 +215,7 @@ class Role implements RoleInterface {
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -237,7 +239,7 @@ class Role implements RoleInterface {
     /**
      * Get parent
      *
-     * @return \LOM\UserBundle\Entity\Role 
+     * @return \LOM\UserBundle\Entity\Role
      */
     public function getParent()
     {

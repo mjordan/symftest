@@ -27,8 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Form model for a user password change - requires the user to enter the old
  * password correctly.
  */
-class UserChangePassword {
-
+class UserChangePassword
+{
     /**
      * @Assert\Length(
      *     min = 6,
@@ -49,7 +49,8 @@ class UserChangePassword {
      *
      * @param string $newPassword
      */
-    public function setNewPassword($newPassword) {
+    public function setNewPassword($newPassword)
+    {
         $this->newPassword = $newPassword;
     }
 
@@ -58,7 +59,8 @@ class UserChangePassword {
      *
      * @return string
      */
-    public function getNewPassword() {
+    public function getNewPassword()
+    {
         return $this->newPassword;
     }
 
@@ -67,7 +69,8 @@ class UserChangePassword {
      *
      * @param string $oldPassword
      */
-    public function setOldPassword($oldPassword) {
+    public function setOldPassword($oldPassword)
+    {
         $this->oldPassword = $oldPassword;
     }
 
@@ -76,7 +79,8 @@ class UserChangePassword {
      *
      * @return string
      */
-    public function getOldPassword() {
+    public function getOldPassword()
+    {
         return $this->oldPassword;
     }
 

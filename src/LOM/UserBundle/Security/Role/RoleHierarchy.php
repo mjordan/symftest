@@ -28,8 +28,8 @@ use Doctrine\ORM\EntityManager;
  * need to store the hierarchy there as well. And since we do that, we need
  * a way to populate the role hierarchy.
  */
-class RoleHierarchy extends RH {
-
+class RoleHierarchy extends RH
+{
     /**
      * Entity manager to get stuff from the database.
      *
@@ -40,11 +40,12 @@ class RoleHierarchy extends RH {
     /**
      * Build the hierarchy
      *
-     * @param array $hierarchy default hierarchy (probably empty)
-     * @param EntityManager $em entity manager to get the roles.
-     * 
+     * @param array         $hierarchy default hierarchy (probably empty)
+     * @param EntityManager $em        entity manager to get the roles.
+     *
      */
-    public function __construct(array $hierarchy, EntityManager $em) {
+    public function __construct(array $hierarchy, EntityManager $em)
+    {
         $this->em = $em;
         parent::__construct($this->buildRolesTree($hierarchy));
     }
@@ -57,7 +58,8 @@ class RoleHierarchy extends RH {
      *
      * @return array
      */
-    private function buildRolesTree(array $hierarchy) {
+    private function buildRolesTree(array $hierarchy)
+    {
         $roles = $this->em->createQuery('select r from LOMUserBundle:Role r')->execute();
         foreach ($roles as $role) {
             if ($role->getParent()) {
@@ -71,6 +73,7 @@ class RoleHierarchy extends RH {
                 }
             }
         }
+
         return $hierarchy;
     }
 

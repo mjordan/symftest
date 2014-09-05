@@ -27,15 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form types for data entry.
  */
-class AdminRoleType extends AbstractType {
-
+class AdminRoleType extends AbstractType
+{
     /**
      * Build a form.
      *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
                 ->add('name')
                 ->add('role')
@@ -49,7 +50,8 @@ class AdminRoleType extends AbstractType {
      *
      * @param OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'LOM\UserBundle\Entity\Role'
         ));
@@ -57,10 +59,11 @@ class AdminRoleType extends AbstractType {
 
     /**
      * Name the form.
-     * 
+     *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'lom_userbundle_role';
     }
 

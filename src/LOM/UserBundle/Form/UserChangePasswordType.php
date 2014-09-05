@@ -27,15 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form types for a user changing a password.
  */
-class UserChangePasswordType extends AbstractType {
-
+class UserChangePasswordType extends AbstractType
+{
     /**
      * Build a password changing form.
      *
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
+     * @param array                                        $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('oldPassword', 'password')
                 ->add('newPassword', 'repeated', array(
                     'type' => 'password',
@@ -51,7 +52,8 @@ class UserChangePasswordType extends AbstractType {
      *
      * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => 'LOM\UserBundle\Form\Model\UserChangePassword',
         ));
@@ -62,7 +64,8 @@ class UserChangePasswordType extends AbstractType {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'user_change_password';
     }
 

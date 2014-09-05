@@ -31,15 +31,16 @@ use LOM\UserBundle\Form\AdminChangePasswordType;
  * User controller.
  *
  */
-class AdminUserController extends Controller {
-
+class AdminUserController extends Controller
+{
     /**
      * Lists all User entities.
      *
      * @return Response A Response instance
      *
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('LOMUserBundle:User')->findAll();
@@ -55,7 +56,8 @@ class AdminUserController extends Controller {
      *
      * @return Response A Response instance
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -104,7 +106,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(User $entity) {
+    private function createCreateForm(User $entity)
+    {
         $form = $this->createForm(new AdminUserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_create'),
             'method' => 'POST',
@@ -117,10 +120,11 @@ class AdminUserController extends Controller {
 
     /**
      * Displays a form to create a new User entity.
-     * 
+     *
      * @return Response A Response instance
      */
-    public function newAction() {
+    public function newAction()
+    {
         $entity = new User();
         $form = $this->createCreateForm($entity);
 
@@ -137,7 +141,8 @@ class AdminUserController extends Controller {
      * @return Response A Response instance
      *
      */
-    public function showAction($id) {
+    public function showAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
@@ -162,7 +167,8 @@ class AdminUserController extends Controller {
      *
      * @return Response A Response instance
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
@@ -188,7 +194,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(User $entity) {
+    private function createEditForm(User $entity)
+    {
         $form = $this->createForm(new AdminUserType(), $entity, array(
             'action' => $this->generateUrl('admin_user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -202,12 +209,13 @@ class AdminUserController extends Controller {
     /**
      * Edits an existing User entity.
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $id the id of the user to edit
+     * @param int                                       $id      the id of the user to edit
      *
-     * @return Response A Response instance
+     * @return Response              A Response instance
      * @throws NotFoundHttpException
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
@@ -237,12 +245,13 @@ class AdminUserController extends Controller {
      * Change a user's password
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $id the id of the user to edit
+     * @param int                                       $id      the id of the user to edit
      *
-     * @return Response A Response instance
+     * @return Response              A Response instance
      * @throws NotFoundHttpException
      */
-    public function passwordAction(Request $request, $id) {
+    public function passwordAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('LOMUserBundle:User')->find($id);
 
@@ -284,13 +293,14 @@ class AdminUserController extends Controller {
     /**
      * Deletes a User entity.
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int $id the id of the entity to delete
+     * @param int                                       $id      the id of the entity to delete
      *
-     * @return Response A Response instance
+     * @return Response              A Response instance
      * @throws NotFoundHttpException
      *
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -316,7 +326,8 @@ class AdminUserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id) {
+    private function createDeleteForm($id)
+    {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('admin_user_delete', array('id' => $id)))
                         ->setMethod('DELETE')

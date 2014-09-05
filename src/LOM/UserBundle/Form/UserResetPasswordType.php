@@ -22,20 +22,20 @@ namespace LOM\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form types for a user resetting their password.
  */
-class UserResetPasswordType extends AbstractType {
-
+class UserResetPasswordType extends AbstractType
+{
     /**
      * Build a form.
      *
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
-     * @param array $options
+     * @param array                                        $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder->add('username', 'text', array(
                     'label' => 'Username',
                     'data' => $this->username,
@@ -55,10 +55,11 @@ class UserResetPasswordType extends AbstractType {
 
     /**
      * Name the form.
-     * 
+     *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'user_reset_password';
     }
 

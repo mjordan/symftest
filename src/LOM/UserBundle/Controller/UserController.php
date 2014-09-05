@@ -31,15 +31,17 @@ use LOM\UserBundle\Form\Model\UserChangePassword;
  * User controller. Lets users edit their own information.
  *
  */
-class UserController extends Controller {
-
+class UserController extends Controller
+{
     /**
      * Lists all User entities.
      *
      * @return Response A Response instance
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $entity = $this->get('security.context')->getToken()->getUser();
+
         return $this->render('LOMUserBundle:User:index.html.twig', array(
                     'entity' => $entity,
         ));
@@ -50,9 +52,11 @@ class UserController extends Controller {
      *
      * @return Response A Response instance
      */
-    public function editAction() {
+    public function editAction()
+    {
         $entity = $this->get('security.context')->getToken()->getUser();
         $editForm = $this->createEditForm($entity);
+
         return $this->render('LOMUserBundle:User:edit.html.twig', array(
                     'entity' => $entity,
                     'edit_form' => $editForm->createView(),
@@ -66,7 +70,8 @@ class UserController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(User $entity) {
+    private function createEditForm(User $entity)
+    {
         $form = $this->createForm(new UserType(), $entity, array(
             'action' => $this->generateUrl('user_update'),
             'method' => 'PUT',
@@ -84,7 +89,8 @@ class UserController extends Controller {
      *
      * @return Response A Response instance
      */
-    public function updateAction(Request $request) {
+    public function updateAction(Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $entity = $this->get('security.context')->getToken()->getUser();
         $editForm = $this->createEditForm($entity);
@@ -92,6 +98,7 @@ class UserController extends Controller {
 
         if ($editForm->isValid()) {
             $em->flush();
+
             return $this->redirect($this->generateUrl('user_edit'));
         }
 
@@ -108,8 +115,8 @@ class UserController extends Controller {
      *
      * @return Response A Response instance
      */
-    public function passwordAction(Request $request) {
-
+    public function passwordAction(Request $request)
+    {
         $changePasswordModel = new UserChangePassword();
         $form = $this->createForm(new UserChangePasswordType(), $changePasswordModel, array(
             'method' => 'POST'
@@ -136,6 +143,7 @@ class UserController extends Controller {
 
             return $this->redirect($this->generateUrl('user'));
         }
+
         return $this->render('LOMUserBundle:User:password.html.twig', array(
                     'password_form' => $form->createView(),
         ));

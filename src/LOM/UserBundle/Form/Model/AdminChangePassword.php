@@ -20,14 +20,13 @@
 
 namespace LOM\UserBundle\Form\Model;
 
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Form model for an administrative password change.
  */
-class AdminChangePassword {
-
+class AdminChangePassword
+{
     /**
      * @Assert\Length(
      *     min = 6,
@@ -41,7 +40,8 @@ class AdminChangePassword {
      *
      * @param string $newPassword unhashed password
      */
-    public function setNewPassword($newPassword) {
+    public function setNewPassword($newPassword)
+    {
         $this->newPassword = $newPassword;
     }
 
@@ -50,7 +50,8 @@ class AdminChangePassword {
      *
      * @return string
      */
-    public function getNewPassword() {
+    public function getNewPassword()
+    {
         return $this->newPassword;
     }
 

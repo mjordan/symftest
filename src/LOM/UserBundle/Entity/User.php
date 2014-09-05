@@ -34,8 +34,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="LOM\UserBundle\Entity\UserRepository")
  * @UniqueEntity(fields="username", message="Email address already used")
  */
-class User implements UserInterface, \Serializable, EquatableInterface {
-
+class User implements UserInterface, \Serializable, EquatableInterface
+{
     /**
      * User's ID.
      *
@@ -47,7 +47,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
 
     /**
      * We will use email addresses for user names.
-     * 
+     *
      * @ORM\Column(type="string", length=128, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -56,7 +56,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
 
     /**
      * Hashed password.
-     * 
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $password;
@@ -92,9 +92,10 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     private $resetCode;
 
     /**
-     * Construct a user. 
+     * Construct a user.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
         $this->resetExpires = null;
@@ -105,15 +106,16 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return type
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->username;
     }
 
     /**
      * Does nothing.
      */
-    public function eraseCredentials() {
-
+    public function eraseCredentials()
+    {
     }
 
     /**
@@ -121,7 +123,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return string
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
 
@@ -130,7 +133,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return Role[]
      */
-    public function getRoles() {
+    public function getRoles()
+    {
         return $this->roles->toArray();
     }
 
@@ -139,7 +143,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return null
      */
-    public function getSalt() {
+    public function getSalt()
+    {
         return null;
     }
 
@@ -148,7 +153,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return string
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
 
@@ -157,7 +163,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return string serialized user
      */
-    public function serialize() {
+    public function serialize()
+    {
         return serialize(array($this->id));
     }
 
@@ -166,14 +173,15 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @param type $serialized
      */
-    public function unserialize($serialized) {
+    public function unserialize($serialized)
+    {
         list($this->id) = unserialize($serialized);
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -236,7 +244,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -250,7 +258,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return boolean
      */
-    public function isEqualTo(UserInterface $user) {
+    public function isEqualTo(UserInterface $user)
+    {
         return $user !== null && $user->id === $this->id;
     }
 
@@ -295,7 +304,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     /**
      * Get fullname
      *
-     * @return string 
+     * @return string
      */
     public function getFullname()
     {
@@ -319,7 +328,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     /**
      * Get institution
      *
-     * @return string 
+     * @return string
      */
     public function getInstitution()
     {
@@ -333,7 +342,8 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      *
      * @return User
      */
-    public function setResetExpires($resetExpires) {
+    public function setResetExpires($resetExpires)
+    {
         $this->resetExpires = $resetExpires;
 
         return $this;
@@ -353,7 +363,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
      * Set reset_code
      *
      * @param string $resetCode
-     * 
+     *
      * @return User
      */
     public function setResetCode($resetCode)
@@ -366,7 +376,7 @@ class User implements UserInterface, \Serializable, EquatableInterface {
     /**
      * Get reset_code
      *
-     * @return string 
+     * @return string
      */
     public function getResetCode()
     {
