@@ -23,6 +23,14 @@ class PurgeCommand extends ContainerAwareCommand {
                 ->setDescription('Purge *ALL* data from the database.');
     }
 
+    private function exec($cmd, $args, $output) {
+        $command = $this->getApplication()->find($cmd);
+        $args['command'] = $cmd;
+        $input = new ArrayInput($args);
+        $rc = $command->run($input, $output);
+        return $rc;
+    }
+    
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $helper = $this->getHelper('question');
@@ -31,33 +39,13 @@ class PurgeCommand extends ContainerAwareCommand {
             return;
         }
 
-        $command = $this->getApplication()->find('doctrine:schema:drop');
-        $args = array(
-            'command' => 'doctrine:schema:drop',
-            '--force' => true,
-        );
-        $input = new ArrayInput($args);
-        $rc = $command->run($input, $output);
-
-        $command = $this->getApplication()->find('doctrine:schema:create');
-        $args = array(
-            'command' => 'doctrine:schema:create',
-        );
-        $input = new ArrayInput($args);
-        $rc = $command->run($input, $output);
-
-        $command = $this->getApplication()->find('doctrine:fixtures:load');
-        $args = array(
-            'command' => 'doctrine:fixtures:load',
-        );
-        $input = new ArrayInput($args);
-        $rc = $command->run($input, $output);
-
-
-        // clear any doctrine caches  
-        //exec('php /full/path/your/site/root/app/console doctrine:cache:clear-metadata --env=test');
-        //exec('php /full/path/your/site/root/app/console doctrine:cache:clear-query --env=test');
-        //exec('php /full/path/your/site/root/app/console doctrine:cache:clear-result --env=test');
+        $this->exec('doctrine:schema:drop', array('--force' => true), $output);
+        $this->exec('doctrine:schema:create', array(), $output);
+        $this->exec('doctrine:fixtures:load', array(), $output);
+        $this->exec('cache:clear', array(), $output);
+        $this->exec('doctrine:cache:clear-metadata', array(), $output);
+        $this->exec('doctrine:cache:clear-query', array(), $output);
+        $this->exec('doctrine:cache:clear-result', array(), $output);
     }
 
 }
