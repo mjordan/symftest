@@ -28,21 +28,25 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface {
                 "ROLE_PLNADMIN", 'ROLE_PLNADMIN', 'Add new PLNs, content owners, add users to PLNs.', $adminRole
         );
         $manager->persist($plnAdminRole);
-
+        $this->setReference('plnadmin-role', $plnAdminRole);
+        
         $depRole = $this->buildRole(
                 'ROLE_DEPOSITOR', 'ROLE_DEPOSITOR', "Depositors can add deposits to any PLN.", $plnAdminRole
         );
         $manager->persist($depRole);
+        $this->setReference('depositor-role', $depRole);
 
         $monRole = $this->buildRole(
                 'ROLE_MONITOR', 'ROLE_MONITOR', 'Monitors can check the status of any PLN.', $depRole
         );
         $manager->persist($monRole);
+        $this->setReference('monitor-role', $monRole);
 
         $userRole = $this->buildRole(
                 'ROLE_USER', 'ROLE_USER', 'General users of the system.', $monRole
         );
         $manager->persist($userRole);
+        $this->setReference('user-role', $userRole);
 
         $manager->flush();
     }

@@ -44,20 +44,39 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager) {
-        $user = new User();
-        $user->setUsername("admin@example.com");
-        $user->setFullname("Admin");
-        $user->setIsActive(true);
-        $user->addRole($this->getReference("admin-role"));
-        $user->setInstitution("");
+        $adminUser = $this->buildUser("admin@example.com", "Admin", "admin-role");
+        $manager->persist($adminUser);
+
+        $plnAdminUser = $this->buildUser("plnadmin@example.com", "PLN Admin", "plnadmin-role");
+        $manager->persist($plnAdminUser);
+
+        $depositorUser = $this->buildUser("depositor@example.com", "Depositor", "depositor-role");
+        $manager->persist($depositorUser);
+
+        $monitorUser = $this->buildUser("monitor@example.com", "Monitor", "monitor-role");
+        $manager->persist($monitorUser);
+
+        $user = $this->buildUser("user@example.com", "User", "user-role");
+        $manager->persist($user);
         
+        $manager->flush();
+    }
+
+    private function buildUser($username, $fullname, $role) {
+        $user = new User();
+        $user->setUsername($username);
+        $user->setFullname($fullname);
+        $user->setIsActive(true);
+        $user->addRole($this->getReference($role));
+        $user->setInstitution("");
+        $user->setSalt(md5(uniqid()));
+
         $encoder = $this->container
                 ->get('security.encoder_factory')
                 ->getEncoder($user);
+
         $user->setPassword($encoder->encodePassword('supersecret', $user->getSalt()));
-        
-        $manager->persist($user);
-        $manager->flush();
+        return $user;
     }
 
     /**
