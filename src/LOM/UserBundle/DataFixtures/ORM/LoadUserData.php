@@ -15,14 +15,34 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use LOM\UserBundle\Entity\User;
 
+/**
+ * Load user data fixtures. There's just one user: admin\@example.com with
+ * password supersecret.
+ */
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
 
+    /**
+     * Store a fixture container to load the roles saved by the role fixture
+     * loader.
+     *
+     * @var ContainerInterface $container 
+     */
     private $container;
-    
+
+    /**
+     * Set the container
+     * 
+     * @param ContainerInterface $container
+     */
     public function setContainer(ContainerInterface $container = null) {
         $this->container = $container;
     }
-    
+
+    /**
+     * Load the user fixtures.
+     * 
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager) {
         $user = new User();
         $user->setUsername("admin@example.com");
@@ -40,6 +60,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->flush();
     }
 
+    /**
+     * Users must be loaded after the roles, so set the order here.
+     * 
+     * @return int
+     */
     public function getOrder() {
         return 2;
     }

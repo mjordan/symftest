@@ -16,13 +16,29 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * app:console command to purge all data from the database and reload it from
+ * fixtures.
+ */
 class PurgeCommand extends ContainerAwareCommand {
 
+    /**
+     * Configure the command - set the name and description.
+     * 
+     */
     protected function configure() {
         $this->setName('lom:purge')
                 ->setDescription('Purge *ALL* data from the database.');
     }
 
+    /**
+     * Execute one command with arguments.
+     * 
+     * @param string $cmd
+     * @param array $args
+     * @param OutputInterface $output
+     * @return int
+     */
     private function exec($cmd, $args, $output) {
         $command = $this->getApplication()->find($cmd);
         $args['command'] = $cmd;
