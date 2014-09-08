@@ -32,7 +32,8 @@ class PurgeCommand extends ContainerAwareCommand {
     }
 
     /**
-     * Execute one command with arguments.
+     * Execute one command with arguments. Adds the executing command name to
+     * the arguments as required by the command executor.
      * 
      * @param string $cmd
      * @param array $args
@@ -47,6 +48,13 @@ class PurgeCommand extends ContainerAwareCommand {
         return $rc;
     }
     
+    /**
+     * Entry point for the command.
+     * 
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return type
+     */
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $helper = $this->getHelper('question');
