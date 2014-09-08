@@ -108,7 +108,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function __toString()
     {
-        return $this->username;
+        return (string)$this->username;
     }
 
     /**
