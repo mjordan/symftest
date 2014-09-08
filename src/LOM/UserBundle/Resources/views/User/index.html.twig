@@ -29,6 +29,15 @@
             <th>Roles</th>
             <td>{% for role in entity.getRoles %} {{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %}</td>
         </tr>
+        <tr>
+            <th>Implicit roles</th>
+            <td><ul>
+                    {% for role in roles %} 
+                    <li>{{ role.name }} - {% if is_granted(role.role) %}YES{% else %}NO{% endif %} </li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
     </tbody>
 </table>
 
