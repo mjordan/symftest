@@ -41,9 +41,13 @@ class UserController extends Controller
     public function indexAction()
     {
         $entity = $this->get('security.context')->getToken()->getUser();
-
+        
+        $em = $this->getDoctrine()->getManager();
+        $roles = $em->getRepository('LOMUserBundle:Role')->findAll();
+        
         return $this->render('LOMUserBundle:User:index.html.twig', array(
                     'entity' => $entity,
+                    'roles' => $roles,
         ));
     }
 
@@ -133,6 +137,8 @@ class UserController extends Controller
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
             $newPassword = $form->get('newPassword')->getData();
+            
+            $entity->setSalt(md5(uniqid()));
             $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
             $entity->setPassword($newHash);
             $em->flush();
