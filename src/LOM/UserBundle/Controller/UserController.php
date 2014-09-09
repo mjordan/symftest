@@ -138,7 +138,7 @@ class UserController extends Controller
             $encoder = $factory->getEncoder($entity);
             $newPassword = $form->get('newPassword')->getData();
             
-            $entity->setSalt(md5(uniqid()));
+            $entity->generateSalt();
             $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
             $entity->setPassword($newHash);
             $em->flush();

@@ -66,7 +66,7 @@ class AdminUserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $password = md5(time() . rand() . "not a valid password.");
             $entity->setPassword($password);
-            $entity->setSalt(md5(uniqid()));
+            $entity->generateSalt();
 
             $resetCode = sha1(time() . rand() . "some salty string.");
             $factory = $this->get('security.encoder_factory');
@@ -273,7 +273,7 @@ class AdminUserController extends Controller
             $encoder = $factory->getEncoder($entity);
             $newPassword = $form->get('newPassword')->getData();
             
-            $entity->setSalt(md5(uniqid()));
+            $entity->generateSalt();
             $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
             $entity->setPassword($newHash);
             $em->flush();

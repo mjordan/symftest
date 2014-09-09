@@ -196,6 +196,7 @@ class SecurityController extends Controller
             }
 
             $newPassword = $form->get('password')->getData();
+            $entity->generateSalt();
             $newPasswordHash = $encoder->encodePassword($newPassword, $entity->getSalt());
             $entity->setPassword($newPasswordHash);
 

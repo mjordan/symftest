@@ -58,7 +58,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $user = $this->buildUser("user@example.com", "User", "user-role");
         $manager->persist($user);
-        
+
         $manager->flush();
     }
 
@@ -69,7 +69,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $user->setIsActive(true);
         $user->addRole($this->getReference($role));
         $user->setInstitution("");
-        $user->setSalt(md5(uniqid()));
+        $user->generateSalt();
 
         $encoder = $this->container
                 ->get('security.encoder_factory')

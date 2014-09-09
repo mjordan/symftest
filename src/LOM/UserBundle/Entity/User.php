@@ -60,6 +60,12 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\Column(type="string", length=64)
      */
     private $password;
+    
+    /**
+     * Salt for the password.
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $salt;
 
     /**
      * @ORM\Column(name="is_active", type="boolean")
@@ -145,7 +151,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function getSalt()
     {
-        return null;
+        return $this->salt;
     }
 
     /**
@@ -211,6 +217,14 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function setSalt($salt)
     {
+        $this->salt = $salt;
+    }
+    
+    /**
+     * Generate a salt for the user.
+     */
+    public function generateSalt() {
+        $this->salt = md5(uniqid());
     }
 
     /**
