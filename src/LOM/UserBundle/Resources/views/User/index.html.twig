@@ -38,6 +38,13 @@
                 </ul>
             </td>
         </tr>
+        <tr>
+            <th>Authentication details</th>
+            <td>
+                <ul>
+                    <li>Anonymous - {% if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') %} YES {% else %} NO {% endif %}</li>
+                    <li>Remembered - {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %} YES {% else %} NO {% endif %}</li>
+                    <li>Fully - {% if is_granted('IS_AUTHENTICATED_FULLY') %} YES {% else %} NO {% endif %}</li>
     </tbody>
 </table>
 

@@ -44,6 +44,12 @@ security:
             anonymous: ~
 
         lom_users:
+            remember_me:
+                key: "%secret%"
+                lifetime: 3153600
+                path: /
+                domain: ~
+                
             pattern:    ^/
             form_login:
                 login_path: login
