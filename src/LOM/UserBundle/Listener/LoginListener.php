@@ -43,8 +43,8 @@ class LoginListener
         if ($user) {
             $user->setResetCode(null);
             $user->setResetExpires(null);
-            $this->doctrine->getEntityManager()->persist($user);
-            $this->doctrine->getEntityManager()->flush();
+            $this->doctrine->getManager()->persist($user);
+            $this->doctrine->getManager()->flush();
         }
     }
 
