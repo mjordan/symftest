@@ -28,6 +28,16 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class UserResetPasswordType extends AbstractType
 {
+    
+    private $username;
+    
+    private $resetcode;
+    
+    public function __construct($username, $resetcode) {
+        $this->username = $username;
+        $this->resetcode = $resetcode;
+    }
+    
     /**
      * Build a form.
      *
