@@ -14,3 +14,10 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        host: %testdb_host%
+        dbname: %testdb_name%
+        user: %testdb_user%
+        password: %testdb_pass%
