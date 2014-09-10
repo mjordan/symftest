@@ -1,3 +1,7 @@
+DefaultHomePage:
+    path:     /
+    defaults: { _controller: LOMUserBundle:Default:index }
+
 LOMUserBundle_admin_role:
         resource: "@LOMUserBundle/Resources/config/routing/admin_role.yml"
         prefix:   /admin/role
