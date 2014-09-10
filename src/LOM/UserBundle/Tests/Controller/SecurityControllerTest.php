@@ -3,6 +3,7 @@
 namespace LOM\UserBundle\Tests\Controller;
 
 use LOM\UserBundle\TestCases\FixturesWebTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends FixturesWebTestCase {
@@ -92,6 +93,33 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $this->assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
         $this->assertStringEndsWith('/login', $response->headers->get('location'));
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Redirecting")')->count());
+    }
+    
+    public function testLostPassword() {
+        $client = static::createClient();
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/reset');        
+        $button = $crawler->selectButton('Reset');
+        $form = $button->form(array(
+            'username' => 'user@example.com'
+        ));
+        $crawler = $client->submit($form);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("instructions have been sent")')->count());
+
+        $mailCollector = $client->getProfile()->getCollector("swiftmailer");
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $mailCollector->getMessages()[0];
+        $this->assertInstanceOf('Swift_Message', $message);
+        $this->assertEquals('LOCKSS-O-MATIC Password Reset', $message->getSubject());
+        
+        $matches = array();
+        preg_match('/password reset code is ([0-9a-f]*)/', $message->getBody(), $matches);
+
+        $code = $matches[1];
+        $this->assertRegExp('/^[0-9a-f]{40}$/', $code);
+        
+        $crawler = new Crawler($message->getBody());
+        $this->assertFalse("incomplete.");
     }
 
 }
