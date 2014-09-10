@@ -16,8 +16,8 @@ abstract class FixturesWebTestCase extends WebTestCase {
     }
 
     protected function setUp() {
-        self::runCommand('doctrine:database:create');
-        self::runCommand('doctrine:schema:update --force');
+        self::runCommand('doctrine:schema:drop --force');
+        self::runCommand('doctrine:schema:create');
         self::runCommand('doctrine:fixtures:load -n');
     }
 

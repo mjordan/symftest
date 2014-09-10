@@ -2,54 +2,77 @@
 
 namespace LOM\UserBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use LOM\UserBundle\TestCases\LoginWebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
-class UserControllerTest extends WebTestCase
-{
-    /*
-    public function testCompleteScenario()
-    {
-        // Create a new client to browse the application
-        $client = static::createClient();
+class UserControllerTest extends LoginWebTestCase {
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/user/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'lom_userbundle_user[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'lom_userbundle_user[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+    public function __construct() {
+        parent::__construct();
     }
 
-    */
+    public function testUserHome() {
+        $client = $this->login("user@example.com", "supersecret");
+        $crawler = $client->request('GET', '/user/');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Authentication details")')->count());
+        $this->logout($client);
+    }
+
+    public function testUserEdit() {
+        $client = $this->login("user@example.com", "supersecret");
+        $crawler = $client->request('GET', '/user/edit');        
+        $button = $crawler->selectButton('Update');
+        
+        $form = $button->form(array(
+            'lom_userbundle_user[username]' => 'optimus@example.com',
+            'lom_userbundle_user[fullname]' => 'Optimus the great',
+            'lom_userbundle_user[institution]' => 'Autobots',
+        ));
+        
+        $client->submit($form);
+        
+        $crawler = $client->request('GET', '/user/');
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("optimus@example.com")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Optimus the great")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Autobots")')->count());
+    }
+
+    public function testUserPassword() {
+        $this->setUp();
+        $client = $this->login("user@example.com", "supersecret");
+        $client->followRedirects();
+        
+        $crawler = $client->request('GET', '/user/password');
+        $button = $crawler->selectButton('Change password');
+
+        $form = $button->form(array(
+            'user_change_password[oldPassword]' => 'badpassword',
+            'user_change_password[newPassword][first]' => 'newpassword',
+            'user_change_password[newPassword][second]' => 'newpassword',
+        ));
+
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Wrong value for your current password.")')->count());
+
+        $button = $crawler->selectButton('Change password');
+
+        $form = $button->form(array(
+            'user_change_password[oldPassword]' => 'supersecret',
+            'user_change_password[newPassword][first]' => 'newpassword',
+            'user_change_password[newPassword][second]' => 'newpassword',
+        ));
+
+        $crawler = $client->submit($form);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Your password has been changed.")')->count());
+
+        $this->logout($client);
+        $client = $this->login('user@example.com', 'newpassword');
+        $crawler = $client->request('GET', '/user/');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Authentication details")')->count());
+        $this->logout($client);
+    }
+
 }
