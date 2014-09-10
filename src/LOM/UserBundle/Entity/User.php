@@ -104,7 +104,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
         $this->isActive = true;
         $this->roles = new ArrayCollection();
-        $this->resetExpires = null;
     }
 
     /**
