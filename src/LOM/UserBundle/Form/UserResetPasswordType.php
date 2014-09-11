@@ -35,7 +35,7 @@ class UserResetPasswordType extends AbstractType
 
     /**
      * Build a user password reset form
-     * 
+     *
      * @param string $username
      * @param string $resetcode
      */

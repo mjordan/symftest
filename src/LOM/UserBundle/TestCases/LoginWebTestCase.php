@@ -19,10 +19,10 @@ class LoginWebTestCase extends FixturesWebTestCase
 
     /**
      * Try to login to the application, and return the client.
-     * 
+     *
      * @param string $username
      * @param string $password
-     * 
+     *
      * @return Client
      */
     public function login($username, $password)
@@ -43,9 +43,9 @@ class LoginWebTestCase extends FixturesWebTestCase
 
     /**
      * Logout of the application
-     * 
+     *
      * @param Client $client
-     * 
+     *
      * @return Client
      */
     public function logout(Client $client)

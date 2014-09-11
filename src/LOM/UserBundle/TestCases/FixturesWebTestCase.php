@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
 
 /**
- * Extend the WebTestCase class, and add some fixtures. 
+ * Extend the WebTestCase class, and add some fixtures.
  */
 abstract class FixturesWebTestCase extends WebTestCase
 {
@@ -28,7 +28,7 @@ abstract class FixturesWebTestCase extends WebTestCase
     }
 
     /**
-     * Do the setup - drop and recreate the schema and load the 
+     * Do the setup - drop and recreate the schema and load the
      * test data.
      */
     protected function setUp()
@@ -40,9 +40,9 @@ abstract class FixturesWebTestCase extends WebTestCase
 
     /**
      * Run a command.
-     * 
+     *
      * @param string $command
-     * 
+     *
      * @return int 0 if everything went fine, or an error code
      */
     protected static function runCommand($command)
@@ -54,7 +54,7 @@ abstract class FixturesWebTestCase extends WebTestCase
 
     /**
      * Treat $application like a singleton and return it.
-     * 
+     *
      * @return Application
      */
     protected static function getApplication()
