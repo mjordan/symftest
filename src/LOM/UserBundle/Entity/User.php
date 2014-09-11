@@ -370,6 +370,9 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function getResetExpires()
     {
+        if( null === $this->resetExpires) {
+            return null;
+        }
         return $this->resetExpires->format(\DateTime::RFC850);
     }
 
