@@ -23,12 +23,13 @@ namespace LOM\UserBundle\TestCases;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\StringInput;
-
+use Doctrine\Bundle\DoctrineBundle\Registry;
 /**
  * Extend the WebTestCase class, and add some fixtures.
  */
 abstract class FixturesWebTestCase extends WebTestCase
 {
+
     /**
      * The application, so that console commands can be run
      * inside the test setup.
@@ -38,11 +39,32 @@ abstract class FixturesWebTestCase extends WebTestCase
     protected static $application;
 
     /**
+     * Database access
+     *
+     * @var Registry $doctrine
+     */
+    protected static $doctrine;
+
+    /**
      * Construct a test case.
      */
     public function __construct()
     {
         parent::__construct();
+    }
+
+    /**
+     * Get a doctrine instance.
+     * 
+     * @return Registry
+     */
+    public function getDoctrine()
+    {
+        if (null === self::$doctrine) {
+            self::bootKernel();
+            $this->doctrine = static::$kernel->getContainer()->get('doctrine');
+        }
+        return $this->doctrine;
     }
 
     /**
