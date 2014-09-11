@@ -128,7 +128,8 @@ class SecurityControllerTest extends FixturesWebTestCase
 
         $mailCollector = $client->getProfile()->getCollector("swiftmailer");
         $this->assertEquals(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
+        $messages = $mailCollector->getMessages();
+        $message = $messages[0];
         $this->assertInstanceOf('Swift_Message', $message);
         $this->assertEquals('LOCKSS-O-MATIC Password Reset', $message->getSubject());
 
