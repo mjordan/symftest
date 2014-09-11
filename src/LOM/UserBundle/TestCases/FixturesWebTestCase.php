@@ -12,7 +12,6 @@ abstract class FixturesWebTestCase extends WebTestCase {
 
     public function __construct() {
         parent::__construct();
-        self::setUp();
     }
 
     protected function setUp() {
