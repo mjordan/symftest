@@ -118,8 +118,35 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $code = $matches[1];
         $this->assertRegExp('/^[0-9a-f]{40}$/', $code);
         
-        $crawler = new Crawler($message->getBody());
-        $this->assertFalse("incomplete.");
+        $crawler = $client->request('GET', '/reset/confirm');
+        $button = $crawler->selectButton('Reset password');
+        $form = $button->form(array(
+            'user_reset_password[username]' => 'user@example.com',
+            'user_reset_password[resetcode]' => $code,
+            'user_reset_password[password][first]' => 'jibberjabber',
+            'user_reset_password[password][second]' => 'jibberjabber',
+        ));
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+        
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("successfully changed")')->count());
+        
+        $crawler = $client->request('GET', '/login');
+        $response = $client->getResponse();
+
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Username")')->count());
+        $button = $crawler->selectButton('login');
+        $form = $button->form(array(
+            '_username' => 'user@example.com',
+            '_password' => 'jibberjabber',
+        ));
+
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("user@example.com")')->count());
     }
 
 }
