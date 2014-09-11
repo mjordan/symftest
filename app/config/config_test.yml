@@ -18,6 +18,7 @@ swiftmailer:
 
 doctrine:
     dbal:
+        # variables are defined in parameters.yml
         host: %testdb_host%
         dbname: %testdb_name%
         user: %testdb_user%
