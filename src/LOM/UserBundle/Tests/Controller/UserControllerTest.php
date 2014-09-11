@@ -53,7 +53,6 @@ class UserControllerTest extends LoginWebTestCase {
         ));
 
         $crawler = $client->submit($form);
-        $response = $client->getResponse();
 
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Wrong value for your current password.")')->count());
 
