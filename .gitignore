@@ -8,4 +8,5 @@
 /build/
 /vendor/
 /bin/
+!bin/travis.sh
 /composer.phar

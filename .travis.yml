@@ -6,15 +6,6 @@ php:
   - 5.5
   - 5.6
 
-env:
-  - SYMFONY_VERSION=2.5
-
-before_script:
-    - composer -n install
-    - mysql -e 'create database symf_test;'
-    - echo "parameters:" > app/config/parameters.yml
-    - echo "\t testdb_host: 127.0.0.1" >> app/config/parameters.yml
-    - echo "\t testdb_user: travis" >> app/config/parameters.yml
-    - echo "\t testdb_name: symf_test" >> app/config/parameters.yml   
-
+before_script: bin/travis.sh
+    
 script: phpunit -c app
