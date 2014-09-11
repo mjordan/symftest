@@ -8,6 +8,7 @@ php:
 
 before_script: 
  - composer -n install
+ - mysql -e 'create database symf_test;'
  - cp app/config/parameters.yml.travis app/config/parameters.yml
     
 script: phpunit -c app
