@@ -62,7 +62,7 @@ abstract class FixturesWebTestCase extends WebTestCase
     {
         if (null === self::$doctrine) {
             self::bootKernel();
-            $this->doctrine = static::$kernel->getContainer()->get('doctrine');
+            self::$doctrine = static::$kernel->getContainer()->get('doctrine');
         }
 
         return $this->doctrine;

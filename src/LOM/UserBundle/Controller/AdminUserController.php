@@ -74,7 +74,9 @@ class AdminUserController extends Controller
             $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
 
             $entity->setResetCode($resetHash);
-            $entity->setResetExpires((new \DateTime())->add(new \DateInterval('P1D')));
+            $dt = new \DateTime();
+            $dt->add(new \DateInterval('P1D'));
+            $entity->setResetExpires($dt);
 
             $em->persist($entity);
             $em->flush();
