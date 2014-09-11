@@ -55,7 +55,7 @@ abstract class FixturesWebTestCase extends WebTestCase
 
     /**
      * Get a doctrine instance.
-     * 
+     *
      * @return Registry
      */
     public function getDoctrine()
@@ -64,6 +64,7 @@ abstract class FixturesWebTestCase extends WebTestCase
             self::bootKernel();
             $this->doctrine = static::$kernel->getContainer()->get('doctrine');
         }
+
         return $this->doctrine;
     }
 

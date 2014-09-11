@@ -29,6 +29,9 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminUserControllerTest extends LoginWebTestCase
 {
 
+    /**
+     * Construct the test.
+     */
     public function __construct()
     {
         parent::__construct();

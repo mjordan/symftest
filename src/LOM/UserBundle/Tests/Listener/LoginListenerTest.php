@@ -24,12 +24,16 @@ use LOM\UserBundle\TestCases\LoginWebTestCase;
 use LOM\UserBundle\Entity\User;
 
 /**
- * Test the login listener - it should clear password reset codes after a 
+ * Test the login listener - it should clear password reset codes after a
  * successful login.
  */
 class LoginListenerTest extends LoginWebTestCase
 {
 
+    /**
+     * Attempt a password recovery followed by a successful login. The reset
+     * code and expiry date should be nullified.
+     */
     public function testResetCodeAfterLogin()
     {
         $client = static::createClient();
@@ -45,11 +49,11 @@ class LoginListenerTest extends LoginWebTestCase
         $entity = $em->getRepository('LOMUserBundle:User')->find(5);
         $this->assertNotNull($entity->getResetCode());
         $this->assertNotNull($entity->getResetExpires());
-        
+
         $client = $this->login('user@example.com', 'supersecret');
         $crawler = $client->request('GET', '/user/');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Authentication details")')->count());
-        
+
         // fetch a new copy of the user.
         $em->refresh($entity);
         $this->assertNull($entity->getResetCode());
