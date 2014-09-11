@@ -105,7 +105,7 @@ class AdminUserController extends Controller
      *
      * @param User $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(User $entity)
     {
@@ -193,7 +193,7 @@ class AdminUserController extends Controller
      *
      * @param User $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(User $entity)
     {
@@ -209,8 +209,8 @@ class AdminUserController extends Controller
 
     /**
      * Edits an existing User entity.
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int                                       $id      the id of the user to edit
+     * @param Request $request the request being processed
+     * @param int     $id      the id of the user to edit
      *
      * @return Response              A Response instance
      * @throws NotFoundHttpException
@@ -245,8 +245,8 @@ class AdminUserController extends Controller
     /**
      * Change a user's password
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int                                       $id      the id of the user to edit
+     * @param Request $request the request being processed
+     * @param int     $id      the id of the user to edit
      *
      * @return Response              A Response instance
      * @throws NotFoundHttpException
@@ -272,7 +272,7 @@ class AdminUserController extends Controller
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
             $newPassword = $form->get('newPassword')->getData();
-            
+
             $entity->generateSalt();
             $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
             $entity->setPassword($newHash);
@@ -295,8 +295,8 @@ class AdminUserController extends Controller
 
     /**
      * Deletes a User entity.
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int                                       $id      the id of the entity to delete
+     * @param Request $request the request being processed
+     * @param int     $id      the id of the entity to delete
      *
      * @return Response              A Response instance
      * @throws NotFoundHttpException
@@ -327,7 +327,7 @@ class AdminUserController extends Controller
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm($id)
     {

@@ -132,7 +132,7 @@ class SecurityController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createPasswordResetForm(Request $request)
     {

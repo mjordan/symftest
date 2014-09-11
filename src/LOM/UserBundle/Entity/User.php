@@ -60,7 +60,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\Column(type="string", length=64)
      */
     private $password;
-    
+
     /**
      * Salt for the password.
      * @ORM\Column(type="string", length=32, nullable=true)
@@ -113,7 +113,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function __toString()
     {
-        return (string)$this->username;
+        return (string) $this->username;
     }
 
     /**
@@ -218,11 +218,12 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
         $this->salt = $salt;
     }
-    
+
     /**
      * Generate a salt for the user.
      */
-    public function generateSalt() {
+    public function generateSalt()
+    {
         $this->salt = md5(uniqid());
     }
 

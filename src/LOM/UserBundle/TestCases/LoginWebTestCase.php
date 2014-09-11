@@ -4,13 +4,29 @@ namespace LOM\UserBundle\TestCases;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class LoginWebTestCase extends FixturesWebTestCase {
-    
-    public function __construct() {
+/**
+ * Extend FixturesWebTestCase with a login method.
+ */
+class LoginWebTestCase extends FixturesWebTestCase
+{
+    /**
+     * Construct a test case
+     */
+    public function __construct()
+    {
         parent::__construct();
     }
-    
-    public function login($username, $password) {
+
+    /**
+     * Try to login to the application, and return the client.
+     * 
+     * @param string $username
+     * @param string $password
+     * 
+     * @return Client
+     */
+    public function login($username, $password)
+    {
         $client = static::createClient();
         $client->restart();
         $crawler = $client->request('GET', '/login');
@@ -21,13 +37,23 @@ class LoginWebTestCase extends FixturesWebTestCase {
         ));
         $client->submit($form);
         $client->followRedirect();
+
         return $client;
     }
-    
-    public function logout(Client $client) {
+
+    /**
+     * Logout of the application
+     * 
+     * @param Client $client
+     * 
+     * @return Client
+     */
+    public function logout(Client $client)
+    {
         $client->request('GET', '/logout');
         $client->restart();
+
         return $client;
     }
-    
+
 }

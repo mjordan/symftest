@@ -6,9 +6,17 @@ use LOM\UserBundle\TestCases\FixturesWebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 
-class SecurityControllerTest extends FixturesWebTestCase {
+/**
+ * Test the security features of the app.
+ */
+class SecurityControllerTest extends FixturesWebTestCase
+{
 
-    public function testAnonUserAccess() {
+    /**
+     * Attempt to access the user page without logging in.
+     */
+    public function testAnonUserAccess()
+    {
         $client = static::createClient();
         $client->restart();
 
@@ -26,7 +34,11 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Login")')->count());
     }
 
-    public function testAnonAdminAccess() {
+    /**
+     * Attempt to access the admin page without logging in.
+     */
+    public function testAnonAdminAccess()
+    {
         $client = static::createClient();
         $client->restart();
 
@@ -44,7 +56,11 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Login")')->count());
     }
 
-    public function testUserLogin() {
+    /**
+     * Attempt to login.
+     */
+    public function testUserLogin()
+    {
         $client = static::createClient();
         $client->restart();
 
@@ -94,11 +110,15 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $this->assertStringEndsWith('/login', $response->headers->get('location'));
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Redirecting")')->count());
     }
-    
-    public function testLostPassword() {
+
+    /**
+     * Attempt to reset a password.
+     */
+    public function testLostPassword()
+    {
         $client = static::createClient();
         $client->followRedirects();
-        $crawler = $client->request('GET', '/reset');        
+        $crawler = $client->request('GET', '/reset');
         $button = $crawler->selectButton('Reset');
         $form = $button->form(array(
             'username' => 'user@example.com'
@@ -111,13 +131,13 @@ class SecurityControllerTest extends FixturesWebTestCase {
         $message = $mailCollector->getMessages()[0];
         $this->assertInstanceOf('Swift_Message', $message);
         $this->assertEquals('LOCKSS-O-MATIC Password Reset', $message->getSubject());
-        
+
         $matches = array();
         preg_match('/password reset code is ([0-9a-f]*)/', $message->getBody(), $matches);
 
         $code = $matches[1];
         $this->assertRegExp('/^[0-9a-f]{40}$/', $code);
-        
+
         $crawler = $client->request('GET', '/reset/confirm');
         $button = $crawler->selectButton('Reset password');
         $form = $button->form(array(
@@ -128,10 +148,10 @@ class SecurityControllerTest extends FixturesWebTestCase {
         ));
         $crawler = $client->submit($form);
         $response = $client->getResponse();
-        
+
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("successfully changed")')->count());
-        
+
         $crawler = $client->request('GET', '/login');
         $response = $client->getResponse();
 

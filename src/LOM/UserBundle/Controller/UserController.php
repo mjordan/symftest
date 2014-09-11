@@ -41,10 +41,10 @@ class UserController extends Controller
     public function indexAction()
     {
         $entity = $this->get('security.context')->getToken()->getUser();
-        
+
         $em = $this->getDoctrine()->getManager();
         $roles = $em->getRepository('LOMUserBundle:Role')->findAll();
-        
+
         return $this->render('LOMUserBundle:User:index.html.twig', array(
                     'entity' => $entity,
                     'roles' => $roles,
@@ -72,7 +72,7 @@ class UserController extends Controller
      *
      * @param User $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(User $entity)
     {
@@ -137,7 +137,7 @@ class UserController extends Controller
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
             $newPassword = $form->get('newPassword')->getData();
-            
+
             $entity->generateSalt();
             $newHash = $encoder->encodePassword($newPassword, $entity->getsalt());
             $entity->setPassword($newHash);

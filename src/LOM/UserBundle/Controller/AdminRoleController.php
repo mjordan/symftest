@@ -32,6 +32,7 @@ class AdminRoleController extends Controller
 {
     /**
      * Lists all Role entities.
+     *
      * @return Response A Response instance
      */
     public function indexAction()
@@ -76,7 +77,7 @@ class AdminRoleController extends Controller
      *
      * @param Role $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createCreateForm(Role $entity)
     {
@@ -92,6 +93,7 @@ class AdminRoleController extends Controller
 
     /**
      * Displays a form to create a new Role entity.
+     *
      * @return Response A Response instance
      *
      */
@@ -108,6 +110,7 @@ class AdminRoleController extends Controller
 
     /**
      * Finds and displays a Role entity.
+     *
      * @param int $id The id of the role to display.
      *
      * @return Response A Response instance
@@ -132,6 +135,7 @@ class AdminRoleController extends Controller
 
     /**
      * Displays a form to edit an existing Role entity.
+     *
      * @param int $id the ID of the entity to edit.
      *
      * @return Response A Response instance
@@ -161,7 +165,7 @@ class AdminRoleController extends Controller
      *
      * @param Role $entity The entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createEditForm(Role $entity)
     {
@@ -178,8 +182,8 @@ class AdminRoleController extends Controller
     /**
      * Edits an existing Role entity.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int                                       $id      the id of the role to edit
+     * @param Request $request Request being processed
+     * @param int     $id      the id of the role to edit
      *
      * @return Response              A Response instance
      * @throws NotFoundHttpException
@@ -214,8 +218,8 @@ class AdminRoleController extends Controller
     /**
      * Deletes a Role entity.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param int                                       $id      the id of the role to delete
+     * @param Request $request the request being processed
+     * @param int     $id      the id of the role to delete
      *
      * @return Response              A Response instance
      * @throws NotFoundHttpException
@@ -246,7 +250,7 @@ class AdminRoleController extends Controller
      *
      * @param mixed $id The entity id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm($id)
     {

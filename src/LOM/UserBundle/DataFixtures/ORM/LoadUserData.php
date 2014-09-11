@@ -16,34 +16,35 @@ use Doctrine\Common\Persistence\ObjectManager;
 use LOM\UserBundle\Entity\User;
 
 /**
- * Load user data fixtures. There's just one user: admin\@example.com with
- * password supersecret.
+ * Load user data fixtures.
  */
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
-
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+{
     /**
      * Store a fixture container to load the roles saved by the role fixture
      * loader.
      *
-     * @var ContainerInterface $container 
+     * @var ContainerInterface $container
      */
     private $container;
 
     /**
      * Set the container
-     * 
+     *
      * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface $container = null) {
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
     /**
      * Load the user fixtures.
-     * 
+     *
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $adminUser = $this->buildUser("admin@example.com", "Admin", "admin-role");
         $manager->persist($adminUser);
 
@@ -62,7 +63,17 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->flush();
     }
 
-    private function buildUser($username, $fullname, $role) {
+    /**
+     * Build a new user and return it.
+     *
+     * @param string $username the user name
+     * @param string $fullname the full name
+     * @param string $role     the role, as remembered in LoadRoleData
+     *
+     * @return User
+     */
+    private function buildUser($username, $fullname, $role)
+    {
         $user = new User();
         $user->setUsername($username);
         $user->setFullname($fullname);
@@ -76,15 +87,17 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 ->getEncoder($user);
 
         $user->setPassword($encoder->encodePassword('supersecret', $user->getSalt()));
+
         return $user;
     }
 
     /**
      * Users must be loaded after the roles, so set the order here.
-     * 
+     *
      * @return int
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return 2;
     }
 

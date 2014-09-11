@@ -32,7 +32,7 @@
         <tr>
             <th>Implicit roles</th>
             <td><ul>
-                    {% for role in roles %} 
+                    {% for role in roles %}
                     <li>{{ role.name }} - {% if is_granted(role.role) %}YES{% else %}NO{% endif %} </li>
                     {% endfor %}
                 </ul>

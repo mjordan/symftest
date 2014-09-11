@@ -10,14 +10,15 @@ use LOM\UserBundle\Entity\Role;
 /**
  * Load the role fixtures into the database.
  */
-class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface {
-
+class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface
+{
     /**
      * Load the role data.
-     * 
+     *
      * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager)
+    {
         $adminRole = $this->buildRole(
                 'ROLE_ADMIN', 'ROLE_ADMIN', 'Super user'
         );
@@ -29,7 +30,7 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface {
         );
         $manager->persist($plnAdminRole);
         $this->setReference('plnadmin-role', $plnAdminRole);
-        
+
         $depRole = $this->buildRole(
                 'ROLE_DEPOSITOR', 'ROLE_DEPOSITOR', "Depositors can add deposits to any PLN.", $plnAdminRole
         );
@@ -53,14 +54,16 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface {
 
     /**
      * Convenience method to build a role. Does not persist it to the database.
-     * 
+     *
      * @param string $name
      * @param string $role
      * @param string $desc
-     * @param Role $parent
-     * @return \LOM\UserBundle\Entity\Role
+     * @param Role   $parent
+     *
+     * @return Role
      */
-    private function buildRole($name, $role, $desc, Role $parent = null) {
+    private function buildRole($name, $role, $desc, Role $parent = null)
+    {
         $role = new Role();
         $role->setName($name);
         $role->setRole($role);
@@ -68,16 +71,18 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface {
         if ($parent !== null) {
             $role->setParent($parent);
         }
+
         return $role;
     }
 
     /**
      * Roles must be loaded into the database before the users, so set the order
      * here.
-     * 
+     *
      * @return int
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return 1;
     }
 

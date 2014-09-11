@@ -42,7 +42,6 @@ class RoleHierarchy extends RH
      *
      * @param array         $hierarchy default hierarchy (probably empty)
      * @param EntityManager $em        entity manager to get the roles.
-     *
      */
     public function __construct(array $hierarchy, EntityManager $em)
     {
