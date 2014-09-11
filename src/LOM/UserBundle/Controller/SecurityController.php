@@ -97,7 +97,7 @@ class SecurityController extends Controller
         try {
             $entity = $em->getRepository('LOMUserBundle:User')->loadUserByUsername($username);
 
-            $resetCode = sha1(time() . rand() . "some salty string.");
+            $resetCode = sha1(time() . rand() . uniqid());
             $factory = $this->get('security.encoder_factory');
             $encoder = $factory->getEncoder($entity);
             $resetHash = $encoder->encodePassword($resetCode, $entity->getSalt());
@@ -191,7 +191,7 @@ class SecurityController extends Controller
                 throw new \Exception("Reset expired.");
             }
 
-            if (!$encoder->isPasswordValid($entity->getResetCode(), (string) $resetcode, $entity->getSalt())) {
+            if (!$encoder->isPasswordValid($entity->getResetCode(), $resetcode, $entity->getSalt())) {
                 throw new \Exception("Reset code is not valid.");
             }
 
