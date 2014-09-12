@@ -21,7 +21,24 @@
                 {% else %}
                     <li><a href="{{ path('login') }}">Login</a></li>
                 {% endif %}
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <li><a href="{{ path('user', {'_switch_user': '_exit'}) }}">Exit impersonation</a></li>
+                {% endif %}
                 </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                <form method="get">
+                    <fieldset>
+                        <legend>Impersonate user</legend>
+                        <div>
+                            <label for="_switch_user">User</label>
+                            <input name="_switch_user" type="text">
+                        </div>
+                        <div>
+                            <button type="submit">Switch</button>
+                        </div>
+                    </fieldset>
+                </form>
+                {% endif %}
             </nav>
         </header>
 
