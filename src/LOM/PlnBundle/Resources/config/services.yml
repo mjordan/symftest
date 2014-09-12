@@ -1,0 +1,7 @@
+parameters:
+#    lom_pln.example.class: LOM\PlnBundle\Example
+
+services:
+#    lom_pln.example:
+#        class: %lom_pln.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

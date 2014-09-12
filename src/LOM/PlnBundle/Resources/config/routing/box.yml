@@ -1,0 +1,30 @@
+box:
+    path:     /
+    defaults: { _controller: "LOMPlnBundle:Box:index" }
+
+box_show:
+    path:     /{id}/show
+    defaults: { _controller: "LOMPlnBundle:Box:show" }
+
+box_new:
+    path:     /new
+    defaults: { _controller: "LOMPlnBundle:Box:new" }
+
+box_create:
+    path:     /create
+    defaults: { _controller: "LOMPlnBundle:Box:create" }
+    requirements: { _method: post }
+
+box_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "LOMPlnBundle:Box:edit" }
+
+box_update:
+    path:     /{id}/update
+    defaults: { _controller: "LOMPlnBundle:Box:update" }
+    requirements: { _method: post|put }
+
+box_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "LOMPlnBundle:Box:delete" }
+    requirements: { _method: post|delete }

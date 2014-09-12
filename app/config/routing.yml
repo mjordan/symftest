@@ -1,3 +1,7 @@
+lom_pln:
+    resource: "@LOMPlnBundle/Resources/config/routing.yml"
+    prefix:   /
+
 lom_user:
     resource: "@LOMUserBundle/Resources/config/routing.yml"
     prefix:   /

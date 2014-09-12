@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new LOM\UserBundle\LOMUserBundle(),
+            new LOM\PlnBundle\LOMPlnBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

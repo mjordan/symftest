@@ -1,0 +1,30 @@
+pln:
+    path:     /
+    defaults: { _controller: "LOMPlnBundle:Pln:index" }
+
+pln_show:
+    path:     /{id}/show
+    defaults: { _controller: "LOMPlnBundle:Pln:show" }
+
+pln_new:
+    path:     /new
+    defaults: { _controller: "LOMPlnBundle:Pln:new" }
+
+pln_create:
+    path:     /create
+    defaults: { _controller: "LOMPlnBundle:Pln:create" }
+    requirements: { _method: post }
+
+pln_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "LOMPlnBundle:Pln:edit" }
+
+pln_update:
+    path:     /{id}/update
+    defaults: { _controller: "LOMPlnBundle:Pln:update" }
+    requirements: { _method: post|put }
+
+pln_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "LOMPlnBundle:Pln:delete" }
+    requirements: { _method: post|delete }

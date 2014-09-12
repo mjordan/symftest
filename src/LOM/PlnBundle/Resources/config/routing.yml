@@ -1,0 +1,8 @@
+
+LOMPlnBundle_pln:
+    resource: "@LOMPlnBundle/Resources/config/routing/pln.yml"
+    prefix:   /pln
+
+LOMPlnBundle_box:
+    resource: "@LOMPlnBundle/Resources/config/routing/box.yml"
+    prefix:   /box
