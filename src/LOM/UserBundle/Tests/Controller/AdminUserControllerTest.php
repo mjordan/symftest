@@ -74,6 +74,9 @@ class AdminUserControllerTest extends LoginWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("user@example.com")')->count());
     }
 
+    /**
+     * Attempt to edit a user.
+     */
     public function testAdminEditUser()
     {
         $client = $this->login("admin@example.com", "supersecret");
@@ -102,6 +105,9 @@ class AdminUserControllerTest extends LoginWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_DEPOSITOR")')->count());
     }
 
+    /**
+     * Attempt to create a new user.
+     */
     public function testAdminCreateUser()
     {
         $client = $this->login("admin@example.com", "supersecret");
