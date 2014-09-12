@@ -73,12 +73,13 @@ class AdminUserControllerTest extends LoginWebTestCase
         $crawler = $client->request('GET', '/user/');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("user@example.com")')->count());
     }
-    
-    public function testAdminEditUser() {
+
+    public function testAdminEditUser()
+    {
         $client = $this->login("admin@example.com", "supersecret");
         $crawler = $client->request('GET', '/admin/user/5/edit');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("User edit")')->count());
-        
+
         $button = $crawler->selectButton('Update');
         $form = $button->form(array(
             'lom_userbundle_user[username]' => 'optimus@example.com',
@@ -92,7 +93,7 @@ class AdminUserControllerTest extends LoginWebTestCase
         $crawler = $client->followRedirect();
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        
+
         $this->assertGreaterThan(0, $crawler->filter('html:contains("The user information has been updated.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("optimus@example.com")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Optimus Prime")')->count());
@@ -100,12 +101,13 @@ class AdminUserControllerTest extends LoginWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_USER")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_DEPOSITOR")')->count());
     }
-    
-    public function testAdminCreateUser() {
+
+    public function testAdminCreateUser()
+    {
         $client = $this->login("admin@example.com", "supersecret");
         $crawler = $client->request('GET', '/admin/user/new');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("User creation")')->count());
-        
+
         $button = $crawler->selectButton('Create');
         $form = $button->form(array(
             'lom_userbundle_user[username]' => 'megatron@example.com',
@@ -116,17 +118,62 @@ class AdminUserControllerTest extends LoginWebTestCase
             )
         ));
         $crawler = $client->submit($form);
+
+        $mailCollector = $client->getProfile()->getCollector("swiftmailer");
+        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $messages = $mailCollector->getMessages();
+        $message = $messages[0];
+        $this->assertInstanceOf('Swift_Message', $message);
+        $this->assertEquals('Welcome to LOCKS-O-MATTIC.', $message->getSubject());
+
+        $matches = array();
+        preg_match('/password reset code is\s*([0-9a-f]*)/', $message->getBody(), $matches);
+
+        $code = $matches[1];
+        $this->assertRegExp('/^[0-9a-f]{40}$/', $code);
+
         $crawler = $client->followRedirect();
         $response = $client->getResponse();
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        
+
         $this->assertGreaterThan(0, $crawler->filter('html:contains("The user account has been created.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("megatron@example.com")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Megatron Baddy")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Decepticons")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_USER")')->count());
         $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_DEPOSITOR")')->count());
+
+        $this->logout($client);
+        $crawler = $client->request('GET', '/reset/confirm');
+        $button = $crawler->selectButton('Reset password');
+        $form = $button->form(array(
+            'user_reset_password[username]' => 'megatron@example.com',
+            'user_reset_password[resetcode]' => $code,
+            'user_reset_password[password][first]' => 'pewpewpewpew',
+            'user_reset_password[password][second]' => 'pewpewpewpew',
+        ));
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("successfully changed")')->count());
+
+        $client->followRedirects();
+        $crawler = $client->request('GET', '/login');
+        $response = $client->getResponse();
+
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Username")')->count());
+        $button = $crawler->selectButton('login');
+        $form = $button->form(array(
+            '_username' => 'megatron@example.com',
+            '_password' => 'pewpewpewpew',
+        ));
+
+        $crawler = $client->submit($form);
+        $response = $client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("megatron@example.com")')->count());
     }
-    
 
 }

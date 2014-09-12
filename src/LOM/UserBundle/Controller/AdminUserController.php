@@ -82,7 +82,7 @@ class AdminUserController extends Controller
             $em->flush();
 
             $message = \Swift_Message::newInstance()
-                    ->setSubject("LOCKSS-O-MATIC Password Reset")
+                    ->setSubject("Welcome to LOCKS-O-MATTIC.")
                     ->setFrom("mjoyce@sfu.ca")
                     ->setTo($entity->getUsername())
                     ->setBody(
