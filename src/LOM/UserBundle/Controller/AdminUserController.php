@@ -93,6 +93,10 @@ class AdminUserController extends Controller
             )));
             $this->get('mailer')->send($message);
 
+            $this->get('session')->getFlashBag()->add(
+                    'notice', 'The user account has been created.'
+            );
+
             return $this->redirect($this->generateUrl('admin_user_show', array('id' => $entity->getId())));
         }
 
@@ -234,7 +238,13 @@ class AdminUserController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_user_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add(
+                    'notice', 'The user information has been updated.'
+            );
+
+            return $this->redirect($this->generateUrl('admin_user_show', array(
+                'id' => $id
+            )));
         }
 
         return $this->render('LOMUserBundle:AdminUser:edit.html.twig', array(

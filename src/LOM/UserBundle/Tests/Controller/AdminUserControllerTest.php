@@ -73,5 +73,60 @@ class AdminUserControllerTest extends LoginWebTestCase
         $crawler = $client->request('GET', '/user/');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("user@example.com")')->count());
     }
+    
+    public function testAdminEditUser() {
+        $client = $this->login("admin@example.com", "supersecret");
+        $crawler = $client->request('GET', '/admin/user/5/edit');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("User edit")')->count());
+        
+        $button = $crawler->selectButton('Update');
+        $form = $button->form(array(
+            'lom_userbundle_user[username]' => 'optimus@example.com',
+            'lom_userbundle_user[fullname]' => 'Optimus Prime',
+            'lom_userbundle_user[institution]' => 'Autobots',
+            'lom_userbundle_user[roles]' => array(
+                '5', '3'
+            )
+        ));
+        $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
+        $response = $client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("The user information has been updated.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("optimus@example.com")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Optimus Prime")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Autobots")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_USER")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_DEPOSITOR")')->count());
+    }
+    
+    public function testAdminCreateUser() {
+        $client = $this->login("admin@example.com", "supersecret");
+        $crawler = $client->request('GET', '/admin/user/new');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("User creation")')->count());
+        
+        $button = $crawler->selectButton('Create');
+        $form = $button->form(array(
+            'lom_userbundle_user[username]' => 'megatron@example.com',
+            'lom_userbundle_user[fullname]' => 'Megatron Baddy',
+            'lom_userbundle_user[institution]' => 'Decepticons',
+            'lom_userbundle_user[roles]' => array(
+                '5', '3'
+            )
+        ));
+        $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
+        $response = $client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("The user account has been created.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("megatron@example.com")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Megatron Baddy")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Decepticons")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_USER")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('a:contains("ROLE_DEPOSITOR")')->count());
+    }
+    
 
 }
