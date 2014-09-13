@@ -73,7 +73,7 @@ class PurgeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $helper = $this->getHelper('question');
-        $question = new ConfirmationQuestion('This command will purge all data from the database. Continue y/N ?', false);
+        $question = new ConfirmationQuestion('This command will purge all data from the database. Continue y/N? ', false);
         if (!$helper->ask($input, $output, $question)) {
             return;
         }
