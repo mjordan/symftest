@@ -1,7 +1,7 @@
 Installing the symftest Symfony application
 ===========================================
 
-The instructions below describe how to use Composer to install Symfony on a Linux or OSX machine.
+The instructions below describe how to use Composer to install Symfony on a Linux or OSX machine. Before running Composer to install Symfony, clone the symftest repo, as outlined below.
 
 Prerequisites
 -------------
