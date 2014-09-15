@@ -28,16 +28,10 @@ class LoadPlnData extends AbstractFixture implements OrderedFixtureInterface, Co
     {
         $franklin = $this->buildPln('franklin', $manager);
         $this->setReference('pln-franklin', $franklin);
-        $manager->flush();
-
-        $this->setAcls($this->getReference('plnadmin-user'), $franklin, array(MaskBuilder::MASK_OWNER));
-        $this->setAcls($this->getReference('depositor-user'), $franklin, array(MaskBuilder::MASK_MASTER));
-        $this->setAcls($this->getReference('monitor-user'), $franklin, array(MaskBuilder::MASK_VIEW));
-
-        $dewey = $this->buildPln('dewey', $manager);
-        $this->setReference('pln-dewey', $dewey);
-        $manager->flush();
-
+        
+//        $dewey = $this->buildPln('dewey', $manager);
+//        $this->setReference('pln-dewey', $dewey);
+        
 //        $borges = $this->buildPln('borges', $manager);
 //        $this->setReference('pln-borges', $borges);
 //
@@ -46,24 +40,8 @@ class LoadPlnData extends AbstractFixture implements OrderedFixtureInterface, Co
 //
 //        $jefferson = $this->buildPln('jeffeson', $manager);
 //        $this->setReference('pln-jefferson', $jefferson);
-    }
-
-    private function setAcls(User $user, Pln $pln, $permissions = array())
-    {
-        $aclProvider = $this->container->get('security.acl.provider');
-        $objectId = ObjectIdentity::fromDomainObject($pln);
-        try {
-            $acl = $aclProvider->findAcl($objectId);
-        } catch (AclNotFoundException $ex) {
-            $acl = $aclProvider->createAcl($objectId);
-        }
-        $builder = new MaskBuilder();
-        foreach ($permissions as $p) {
-            $builder->add($p);
-        }
-        $securityId = UserSecurityIdentity::fromAccount($user);
-        $acl->insertObjectAce($securityId, $builder->get());
-        $aclProvider->updateAcl($acl);
+        
+        $manager->flush();
     }
 
     private function buildPln($name, ObjectManager $manager)
