@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use LOM\PlnBundle\Entity\Pln;
+use LOM\PlnBundle\Entity\Box;
 use LOM\PlnBundle\Form\PlnType;
+use LOM\PlnBundle\Form\AddBoxType;
 
 /**
  * Pln controller.
@@ -220,5 +222,42 @@ class PlnController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    private function createAddBoxForm(Pln $pln, Box $box) {
+        $form = $this->createForm(new AddBoxType(), $box, array(
+            'action' => $this->generateUrl('pln_addbox', array(
+                'id' => $pln->getId(),
+            )),
+            'method' => 'POST',
+        ));
+        $form->add('submit', 'submit', array('label' => 'Add box'));
+        return $form;
+    }
+    
+    public function addBoxAction(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $pln = $em->getRepository('LOMPlnBundle:Pln')->find($id);
+        if( ! $pln) {
+            throw $this->createNotFoundException('Unable to find Pln entity.');
+        }
+        
+        $box = new Box();
+        $box->setPln($pln);
+        
+        $form = $this->createAddBoxForm($pln, $box);
+        $form->handleRequest($request);
+        
+        if($form->isValid()) {
+            $em->persist($box);
+            $em->flush();
+            return $this->redirect($this->generateUrl('pln_show', array('id' => $id)));
+        }
+        
+        return $this->render('LOMPlnBundle:Pln:addbox.html.twig', array(
+            'pln' => $pln,
+            'box' => $box,
+            'form' => $form->createView(),
+        ));
     }
 }

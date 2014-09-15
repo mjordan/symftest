@@ -28,3 +28,7 @@ pln_delete:
     path:     /{id}/delete
     defaults: { _controller: "LOMPlnBundle:Pln:delete" }
     requirements: { _method: post|delete }
+    
+pln_addbox:
+    path:     /{id}/addbox
+    defaults: { _controller: "LOMPlnBundle:Pln:addBox" }
