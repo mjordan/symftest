@@ -19,7 +19,7 @@ Installation instructions
 1. php composer.phar install [You will be asked to create a database in this step]
 1. php app/check.php
 1. [Optional but recommended] Open a web browser and go to  http://localhost/path-to-symtest/web/config.php
-1. Changed permission to allow all users to write to app/cache and app/logs (e.g. chmod 666 app/cache and chmod 666 app/logs)
+1. Change permission to allow all users to write to app/cache and app/logs (e.g. chmod 666 app/cache and chmod 666 app/logs)
 1. php app/console doctrine:database:create
 1. php app/console doctrine:schema:update --force
 1. php app/console doctrine:fixtures:load
