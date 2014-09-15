@@ -1,4 +1,8 @@
 security:
+    
+    acl:
+        connection: default
+    
     encoders:
         LOM\UserBundle\Entity\User:
             algorithm: bcrypt
