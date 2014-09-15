@@ -9,6 +9,8 @@ Prerequisites
 1. PHP 5.3.3 or higher
 1. git
 1. A relational database management system such as MySQL or PostgreSQL
+1. PHP's intl extension, if it isn't already installed on your system.
+1. PHPUnit for running tests (optional)
 
 Installation instructions
 -------------------------
@@ -24,4 +26,4 @@ Installation instructions
 1. php app/console doctrine:schema:update --force
 1. php app/console doctrine:fixtures:load
 1. Go to http://localhost/symftest/web/login and log in with admin@example.com / supersecret
-
+1. Run tests: from the command inside the symftest directory run `phpunit -c app`
