@@ -4,6 +4,8 @@ namespace LOM\PlnBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use LOM\PlnBundle\Entity\Pln;
 use LOM\PlnBundle\Entity\Box;
@@ -22,7 +24,7 @@ class PlnController extends Controller
      *
      */
     public function indexAction()
-    {
+    {        
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('LOMPlnBundle:Pln')->findAll();
@@ -37,6 +39,12 @@ class PlnController extends Controller
      */
     public function createAction(Request $request)
     {
+        $securityContext = $this->get('security.context');
+        $objectId = new ObjectIdentity('class', 'LOM\\PlnBundle\\Entity\\Pln');
+        if(false === $securityContext->isGranted('CREATE', $objectId)) {
+            throw new AccessDeniedException("You do not have permission to create Plns.");
+        }
+        
         $entity = new Pln();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -80,6 +88,12 @@ class PlnController extends Controller
      */
     public function newAction()
     {
+        $securityContext = $this->get('security.context');
+        $objectId = new ObjectIdentity('class', 'LOM\\PlnBundle\\Entity\\Pln');
+        if(false === $securityContext->isGranted('CREATE', $objectId)) {
+            throw new AccessDeniedException("You do not have permission to create Plns.");
+        }
+        
         $entity = new Pln();
         $form   = $this->createCreateForm($entity);
 
