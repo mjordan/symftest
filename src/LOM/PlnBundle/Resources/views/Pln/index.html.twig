@@ -24,12 +24,16 @@
                 </td>
                 <td>
                 <ul>
+                    {% if is_granted('ROLE_ADMIN') or is_granted('VIEW', entity) %}
                     <li>
                         <a href="{{ path('pln_show', { 'id': entity.id }) }}">show</a>
                     </li>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') or is_granted('EDIT', entity) %}
                     <li>
                         <a href="{{ path('pln_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
+                    {% endif %}
                 </ul>
                 </td>
             </tr>
