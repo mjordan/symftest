@@ -29,8 +29,8 @@ class LoadPlnData extends AbstractFixture implements OrderedFixtureInterface, Co
         $franklin = $this->buildPln('franklin', $manager);
         $this->setReference('pln-franklin', $franklin);
         
-//        $dewey = $this->buildPln('dewey', $manager);
-//        $this->setReference('pln-dewey', $dewey);
+        $dewey = $this->buildPln('dewey', $manager);
+        $this->setReference('pln-dewey', $dewey);
         
 //        $borges = $this->buildPln('borges', $manager);
 //        $this->setReference('pln-borges', $borges);

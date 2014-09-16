@@ -42,10 +42,12 @@
     </table>
 
         <ul>
+            {% if is_granted('CREATE', classId('LOM\\PlnBundle\\Entity\\Pln')) %}
         <li>
             <a href="{{ path('pln_new') }}">
                 Create a new entry
             </a>
         </li>
+        {% endif %}
     </ul>
     {% endblock %}
