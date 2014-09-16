@@ -5,6 +5,11 @@ php:
   - 5.4
   - 5.5
 
+# only run tests on the master branch, at least for now. Everything else is experimental.
+branches:
+  only:
+    master
+
 before_script: 
     - composer -n install
     - mysql -e 'create database symf_test;'
