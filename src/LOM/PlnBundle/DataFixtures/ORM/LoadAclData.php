@@ -35,6 +35,7 @@ class LoadAclData extends AbstractFixture implements OrderedFixtureInterface, Co
         $this->setEntityAcls($monitor, $franklin, array(MaskBuilder::MASK_VIEW));
 
         $this->setClassAcls($admin, 'LOM\\PlnBundle\\Entity\\Pln', array(MaskBuilder::MASK_CREATE));
+        $this->setClassAcls($plnAdmin, 'LOM\\PlnBundle\\Entity\\Pln', array(MaskBuilder::MASK_CREATE));
         $this->setClassAcls($user, 'LOM\\PlnBundle\\Entity\\Pln', array());
     }
 
